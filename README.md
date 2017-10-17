@@ -14,6 +14,8 @@ to run, you need to install the following packages:
 if using mongo db, don't forget to start it up
 and make sure to start the proper virtualenv
 
+lines 10 and 11 in `myapp.py` control what kind of database is used.
+
 ```
 $ export FLASK_APP=myapp.py
 $ flask run

@@ -7,13 +7,14 @@ section {
     margin:10px;
 }
 
-/*#plotSettings {*/
-    /*width:120px;*/
-/*}*/
-
-/*#plot {*/
-    /*width:550px;*/
-/*}*/
+input[type=text], select {
+    /*width: 100%;*/
+    padding: 5px 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    /*box-sizing: border-box;*/
+    /*resize: none;*/
+}
 
 .toLeft {
     float: left;
@@ -22,4 +23,39 @@ section {
 #plotter {
     width: 70%;
     height: 100%;
+}
+
+table, td, th {
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 15px;
+}
+
+tr:nth-child(even) {
+    background-color: #f2f2f2
+}
+
+.tooltip .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: grey;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px 0;
+
+    /* Position the tooltip */
+    position: absolute;
+    z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+    visibility: visible;
 }

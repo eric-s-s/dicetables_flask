@@ -30,3 +30,16 @@ function shower (data) {
     });
 
 }
+
+
+
+function getTable(tableForm) {
+    var requestStr = tableForm.tableQuery.value;
+    $.getJSON($SCRIPT_ROOT + '_get_table', {'requestStr': requestStr},
+        function (data) {
+            console.log(data);
+            $('#' + tableForm.id).data('tableObj', data);
+            plotCurrentTables();
+        });
+}
+

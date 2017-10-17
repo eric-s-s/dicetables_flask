@@ -15,7 +15,8 @@ function onPageLoad() {
 
     allStatsForms.submit(function (event) {
         event.preventDefault();
-        plotStats(this);
+        var tableEntries = plotStats(this);
+        showStatsRow(this, tableEntries);
     });
 
     setUpHiddenForms(statRequestArea, allStatsForms);
@@ -52,8 +53,8 @@ function getTable(tableForm) {
             console.log(data);
             $('#' + tableForm.id).data('tableObj', data);
             plotCurrentTables();
+            resetStatsTable();
         });
-
 }
 
 function hideTableForm(idStr) {
@@ -65,6 +66,7 @@ function hideTableForm(idStr) {
     hiddenForms.push(idStr);
     hiddenForms.sort();
     plotCurrentTables();
+    resetStatsTable();
 }
 
 function hideStatsForm(idStr) {
@@ -75,6 +77,7 @@ function hideStatsForm(idStr) {
     hiddenForms.push(idStr);
     hiddenForms.sort();
     removeStatsTraces(idStr);
+    $('#rowFor-' + idStr).hide();
 }
 
 function showHiddenForm(requestAreaJQuery) {
@@ -120,6 +123,62 @@ function getRangesForStats() {
     $('.statsInput').attr({'min': min, 'value': min, 'max': max});
 }
 
+// resteStatsTable
+function resetStatsTable() {
+    emptyStatsTable();
+
+    var colorIndex = 0;
+
+    var tableName = $('#tableName');
+    var tableRange = $('#tableRange');
+    var tableMean = $('#tableMean');
+    var tableStdDev = $('#tableStdDev');
+
+    $('.tableRequest').each( function () {
+        var tableObj = $('#' + this.id).data('tableObj');
+        if (tableObj !== null) {
+            var forStatsTable = getTableObjStats(tableObj, colorIndex);
+            colorIndex++;
+            tableName.append(forStatsTable['tableName']);
+            tableRange.append(forStatsTable['tableRange']);
+            tableMean.append(forStatsTable['tableMean']);
+            tableStdDev.append(forStatsTable['tableStdDev']);
+        }
+    });
+}
+
+function emptyStatsTable() {
+    var statsTable = $('#statsTable');
+    statsTable.find('tr:not(".keeper")').hide();
+    statsTable.find('td').remove();
+}
+
+function getTableObjStats(tableObj, index) {
+    var out = {};
+
+    var colors = [
+        '#1f77b4',  // muted blue  rgba(31,119,180, 1)
+        '#ff7f0e',  // safety orange  rgba(255,127,14, 1)
+        '#2ca02c',  // cooked asparagus green  rgba(44,160,44, 1)
+        '#d62728',  // brick red  rgba(214,39,40, 1)
+        '#9467bd',  // muted purple  rgba(148,103,189, 1)
+        '#8c564b',  // chestnut brown  rgba(140,86,75, 1)
+        '#e377c2',  // raspberry yogurt pink  rgba(227,119,194, 1)
+        '#7f7f7f',  // middle gray  rgba(127,127,127, 1)
+        '#bcbd22',  // curry yellow-green  rgba(188,189,34, 1)
+        '#17becf'  // blue-teal  rgba(23,190,207, 1)
+    ];
+    var color = colors[index % colors.length];
+    var name = getDiceListString(tableObj.repr);
+
+    out['tableName'] = "<td style='color:" + color + "'>" + name + "</td>";
+    out['tableRange'] = "<td style='color:" + color + "'>" + tableObj.range[0] + ' to ' + tableObj.range[1] + '</td>';
+    out['tableMean'] = "<td style='color:" + color + "'>" + tableObj.mean + '</td>';
+    out['tableStdDev'] = "<td style='color:" + color + "'>" + tableObj.stddev + '</td>';
+    return out;
+}
+
+// plotStats and helpers
 function plotStats(statsForm) {
     removeStatsTraces(statsForm.id);
     var graphDiv = document.getElementById('plotter');
@@ -156,7 +215,6 @@ function plotStats(statsForm) {
     return tableEntries;
 }
 
-
 function removeStatsTraces(statsFormId) {
     var graphDiv = document.getElementById('plotter');
     var toRemove = [];
@@ -167,7 +225,6 @@ function removeStatsTraces(statsFormId) {
     }
     Plotly.deleteTraces(graphDiv, toRemove);
 }
-
 
 function getRange (left, right) {
     var leftInt = parseInt(left);
@@ -186,7 +243,6 @@ function getRange (left, right) {
     }
     return out;
 }
-
 
 function statsGraphVals(queryArr, tableObj) {
     var start = Math.max(queryArr[0], tableObj.range[0]);
@@ -214,10 +270,6 @@ function statsGraphName(tableObj, pctString, queryArr) {
     return tableName + ': [' + query + ']: ' + pctString + '%';
 }
 
-function getDiceListString(diceTableRepr) {
-    return diceTableRepr.slice("<DiceTable containing ".length, -1);
-}
-
 function statsGraphColor(matchGraphIndex, statsFormId) {
     var colorObjs = [
         {'r': 31, 'g': 119, 'b': 180, 'a': 0.5},
@@ -239,4 +291,39 @@ function statsGraphColor(matchGraphIndex, statsFormId) {
     var mod = modValues[statsFormId.slice(-1)];
 
     return 'rgba(' + (rgbaObj.r + mod[0]) + ',' + (rgbaObj.g + mod[1]) + ',' + (rgbaObj.b + mod[2]) +',0.5)';
+}
+
+// showStatsRow
+function showStatsRow(statsForm, tableEntries) {
+    var rowForStats = $('#rowFor-' + statsForm.id);
+    rowForStats[0].innerHTML = getTableRow(statsForm, tableEntries);
+    rowForStats.show();
+}
+
+function getTableRow(statsForm, tableEntries) {
+    var left = statsForm.left.value;
+    var right = statsForm.right.value;
+    var title = (parseInt(left) < parseInt(right)) ? left + ' to ' + right: right + ' to ' + left;
+    var tableRow = "<th>" + title + "</th>";
+    for (var i=0; i < tableEntries.length; i++) {
+        var entry = tableEntries[i];
+        tableRow += "<td class='tooltip'>" + entry.pctChance + ' %' + getToolTipText(entry) + '</td>';
+    }
+    return tableRow;
+}
+
+function getToolTipText(statsObj) {
+    var start = "<span class='tooltiptext'>";
+    var end = '</span>';
+    return (
+        start + 'ocurrences: ' + statsObj.occurrences +
+        '</br>out of total: ' + statsObj.total +
+        '</br>a one in ' + statsObj.oneInChance + ' chance' + end
+    );
+}
+
+
+
+function getDiceListString(diceTableRepr) {
+    return diceTableRepr.slice("<DiceTable containing ".length, -1);
 }
