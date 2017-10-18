@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Write messages to the devtool console</title>
+    <title>Statistics For Dice</title>
     <meta charset="utf-8"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -21,65 +21,75 @@
 </head>
 <body>
 <section id="plots">
-    <div id="tableRequestArea" class="toLeft">
+    <div id="tableRequestArea">
         <button id="more">more</button>
 
         <form class="tableRequest" id="table-0">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="0">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-1">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="1">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-2">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="2">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-3">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="3">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-4">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="4">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-5">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="5">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-6">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="6">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-7">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="7">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-8">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="8">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-9">
             <button type="button" class="rmTable">rm</button>
-            <input type="text" name="tableQuery" title="get table" value="9">
+            <input type="text" name="tableQuery" title="get table"
+                   placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
 
-
-
-
     </div>
-    <div id="plotter" class="toLeft"></div>
+</section>
+<section class="plotSection">
+
+    <div id="plotter"></div>
     <!--style="width:600px;height:250px;"-->
 
 </section>
