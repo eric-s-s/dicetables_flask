@@ -44,7 +44,6 @@ tr:nth-child(even) {
 
 .tooltip .tooltiptext {
     visibility: hidden;
-    width: 120px;
     background-color: grey;
     color: #fff;
     text-align: center;
