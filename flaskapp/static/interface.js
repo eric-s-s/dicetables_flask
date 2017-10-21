@@ -51,7 +51,7 @@ function getTable(tableForm) {
     $.getJSON($SCRIPT_ROOT + '_get_table', {'requestStr': requestStr},
         function (data) {
             console.log(data);
-            $('#' + tableForm.id).data('tableObj', data);
+            $(tableForm).data('tableObj', data);
             plotCurrentTables();
             resetStatsTable();
         });

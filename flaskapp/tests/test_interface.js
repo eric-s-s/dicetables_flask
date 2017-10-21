@@ -392,23 +392,44 @@ QUnit.test('resetStatsTable', function (assert) {
     });
 });
 
+
+
+
+
 QUnit.test('getTable assigns tableObj to table according to value', function (assert) {
     // TODO need to mockjax!
     initTest();
 
     var table0 = $("#table-0");
-    assert.equal(table0[0].tableQuery.value, 0);
-    getTable(table0[0]);
-    assert.deepEqual(table0.data('tableObj'), fakeAnswer1);
+    table0[0].tableQuery.value = 0;
 
+
+
+    var done = assert.async();
+    getTable(table0[0]);
+    setTimeout(function() {
+        assert.deepEqual(table0.data('tableObj'), fakeAnswer1, 'works?');
+        done();
+    }, 500);
+
+    var done2 = assert.async();
     table0[0].tableQuery.value = 2;
     getTable((table0[0]));
-    assert.deepEqual(table0.data('tableObj'), fakeAnswer3);
+    setTimeout(function() {
+        assert.deepEqual(table0.data('tableObj'), fakeAnswer3, 'works?');
+        done2();
+    }, 500);
 });
 
 QUnit.test('getTable plots current tables and resets StatsTable', function (assert) {
     // TODO mockjax
     initTest();
+
+    var table0 = $('#table-0');
+    var table1 = $('#table-1');
+
+    table0[0].tableQuery.value = 0;
+    table1[0].tableQuery.value = 1;
 
     var graphDiv = document.getElementById('plotter');
     var tableName = $('#tableName');
@@ -416,28 +437,37 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
     assert.equal(tableName.find('td').length, 0, 'statsTable names is empty');
 
     getTable(document.getElementById('table-0'));
-
-    assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data[0], 'one graph x vals');
-    assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data[1], 'one graph y vals');
-    assert.equal(graphDiv.data.length, 1, 'one graph data only one length');
+    var done1 = assert.async();
     var expectedNames = ['[3D4]'];
-    tableName.find('td').each( function (index) {
-        assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct');
-    });
+    setTimeout(function () {
+        assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data[0], 'one graph x vals');
+        assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data[1], 'one graph y vals');
+        assert.equal(graphDiv.data.length, 1, 'one graph data only one length');
+
+        tableName.find('td').each( function (index) {
+            assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct');
+        });
+        done1();
+    }, 500);
+
 
     getTable(document.getElementById('table-1'));
+    var done2 = assert.async();
+    setTimeout(function () {
+        assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data[0], 'first graph x vals');
+        assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data[1], 'first graph y vals');
 
-    assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data[0], 'first graph x vals');
-    assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data[1], 'first graph y vals');
+        assert.deepEqual(graphDiv.data[1].x, fakeAnswer2.data[0], 'second graph x vals');
+        assert.deepEqual(graphDiv.data[1].y, fakeAnswer2.data[1], 'second graph y vals');
 
-    assert.deepEqual(graphDiv.data[1].x, fakeAnswer2.data[0], 'second graph x vals');
-    assert.deepEqual(graphDiv.data[1].y, fakeAnswer2.data[1], 'second graph y vals');
+        assert.equal(graphDiv.data.length, 2, 'data length 2');
+        expectedNames.push('[3D6]');
+        tableName.find('td').each( function (index) {
+            assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct 2 names');
+        });
+        done2();
+    }, 500);
 
-    assert.equal(graphDiv.data.length, 2, 'data length 2');
-    expectedNames.push('[3D6]');
-    tableName.find('td').each( function (index) {
-        assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct 2 names');
-    });
 });
 
 QUnit.test('hideTableForm test all actions', function (assert) {
@@ -446,8 +476,10 @@ QUnit.test('hideTableForm test all actions', function (assert) {
     var table0 = $('#table-0');
     var table1 = $('#table-1');
 
-    getTable(table0[0]);
-    getTable(table1[0]);
+    table0.data('tableObj', fakeAnswer1);
+    table1.data('tableObj', fakeAnswer2);
+    plotCurrentTables();
+    resetStatsTable();
 
     var graphDiv = document.getElementById('plotter');
     var tableName = $('#tableName');

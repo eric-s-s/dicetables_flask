@@ -6,8 +6,19 @@
     <link rel="stylesheet" href="https://code.jquery.com/qunit/qunit-2.4.0.css">
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script src="jquery.mockjax.js"></script>
+    <script>
+        $.mockjax({
+            url: "for_test/_get_table",
+            response: function (settings) {
+                this.responseText = fakeList[parseInt(settings.data.requestStr)];
+            }
+        });
+    </script>
 
-
+    <script type=text/javascript>
+        $SCRIPT_ROOT =  'for_test/';
+    </script>
 
 
 </head>
@@ -94,8 +105,6 @@
 <script src="../static/scinum.js"></script>
 <script src="../static/statsmaker.js"></script>
 <script src="../static/fakedata.js"></script>
-
-<!--use a copy of page in qunit fixture that'll reset it-->
 <script src="../static/interface.js"></script>
 
 <script src="test_scinum.js"></script>
