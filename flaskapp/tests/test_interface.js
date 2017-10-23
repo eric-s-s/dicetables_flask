@@ -392,12 +392,7 @@ QUnit.test('resetStatsTable', function (assert) {
     });
 });
 
-
-
-
-
 QUnit.test('getTable assigns tableObj to table according to value', function (assert) {
-    // TODO need to mockjax!
     initTest();
 
     var table0 = $("#table-0");
@@ -422,7 +417,6 @@ QUnit.test('getTable assigns tableObj to table according to value', function (as
 });
 
 QUnit.test('getTable plots current tables and resets StatsTable', function (assert) {
-    // TODO mockjax
     initTest();
 
     var table0 = $('#table-0');
@@ -470,8 +464,26 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
 
 });
 
+QUnit.test('getTable error code: 400', function(assert) {
+    initTest();
+    var tempAlert = window.alert;
+    var expected = '400: BAD REQUEST\nerror type: royalFuckUp\ndetails: you done fucked up good.';
+    var storage = '';
+    window.alert = function(inputStr) {
+        storage = inputStr;
+    };
+    var table0 = document.getElementById('table-0');
+    table0.tableQuery.value = 'a';
+    getTable(table0);
+    var done = assert.async();
+    setTimeout(function() {
+        assert.deepEqual(storage, expected);
+        window.alert = tempAlert;
+        done();
+    }, 500);
+});
+
 QUnit.test('hideTableForm test all actions', function (assert) {
-    // TODO getTable mockjax!
     initTest();
     var table0 = $('#table-0');
     var table1 = $('#table-1');

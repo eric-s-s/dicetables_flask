@@ -10,8 +10,10 @@ def add_numbers():
     # handler = RequestHandler(MongoDBConnection('test_app', 'test'))
     handler = RequestHandler(SQLConnection(':memory:', 'test'))
     table_obj = handler.get_response(reqeust_str)
+    if 'error' in table_obj:
+        return jsonify(table_obj), 400
     handler.close_connection()
-    return jsonify(table_obj)
+    return jsonify(table_obj), 200
 
 
 @app.route('/')
