@@ -1,4 +1,4 @@
-#This is a test for using flask
+# This is a test for using flask
 
 it's an app that runs on a database and fetches statistics for dice.
 
