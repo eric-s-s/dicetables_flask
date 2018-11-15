@@ -7,7 +7,7 @@ QUnit.test("onPageLoad first table not hidden, others are.", function (assert) {
 
     assert.equal(shownTables.length, 1, 'only one shown table');
     assert.equal(shownTables[0], allTables[0], 'the shown table is the first table');
-    for (var mainIndex = 1; mainIndex < allTables.length; mainIndex++){
+    for (var mainIndex = 1; mainIndex < allTables.length; mainIndex++) {
         assert.equal(allTables[mainIndex], hiddentables[mainIndex - 1]);
     }
 });
@@ -21,7 +21,7 @@ QUnit.test("onPageLoad first statsForm not hidden, others are.", function (asser
 
     assert.equal(shownStats.length, 1, 'only one shown statsForm');
     assert.equal(shownStats[0], allTables[0], 'the shown statsForm is the first one.');
-    for (var mainIndex = 1; mainIndex < allTables.length; mainIndex++){
+    for (var mainIndex = 1; mainIndex < allTables.length; mainIndex++) {
         assert.equal(allTables[mainIndex], hiddenStats[mainIndex - 1]);
     }
 });
@@ -29,7 +29,7 @@ QUnit.test("onPageLoad first statsForm not hidden, others are.", function (asser
 QUnit.test("onPageLoad all tableObj 'data('tableObj') = null", function (assert) {
     $.holdReady(true);
     onPageLoad();
-    $('.tableRequest').each(function(index){
+    $('.tableRequest').each(function (index) {
         assert.strictEqual($(this).data('tableObj'), null);
     });
 });
@@ -114,7 +114,7 @@ QUnit.test('plotCurrentTables removes data that is not a table', function (asser
     initTest();
 
     var graphDiv = document.getElementById('plotter');
-    Plotly.newPlot(graphDiv, [{x:[1,2,3], y:[4, 5, 6]}]);
+    Plotly.newPlot(graphDiv, [{x: [1, 2, 3], y: [4, 5, 6]}]);
     assert.equal(graphDiv.data.length, 1, 'confirm it has graph data');
 
     plotCurrentTables();
@@ -145,7 +145,7 @@ QUnit.test('plotCurrentTables tables gets new min and max', function (assert) {
     assert.deepEqual(fakeAnswer3.range, [1, 16]);
     assert.deepEqual(fakeAnswer1.range, [3, 12]);
 
-    $('.statsInput').each(function (){
+    $('.statsInput').each(function () {
         assert.equal(this.min, 1);
         assert.equal(this.max, 16);
     });
@@ -157,7 +157,7 @@ QUnit.test('plotCurrentTables mode set according to cutoff', function (assert) {
     var xVals1 = [];
     var yVals0 = [];
     var yVals1 = [];
-    for (var value=0; value < 100; value++) {
+    for (var value = 0; value < 100; value++) {
         xVals0.push(value);
         xVals1.push(value);
         yVals0.push(value * 2);
@@ -189,7 +189,7 @@ QUnit.test('getRangesForStats sets min/max/value to 0 if data is empty', functio
     plotCurrentTables(); // set up empty data.
     assert.equal(document.getElementById('plotter').data.length, 0);
     getRangesForStats();
-    $('.statsInput').each(function() {
+    $('.statsInput').each(function () {
         assert.equal(this.value, 0);
         assert.equal(this.min, 0);
         assert.equal(this.max, 0);
@@ -201,17 +201,17 @@ QUnit.test('getRangesForStats sets min/max/value to single x val if all data has
     var allStat = $('.statsInput');
     var graphDiv = document.getElementById('plotter');
 
-    Plotly.newPlot(graphDiv, [{x:[1], y:[100]}, {x:[1], y:[-100]}, {x:[1], y:[-100]}]);
+    Plotly.newPlot(graphDiv, [{x: [1], y: [100]}, {x: [1], y: [-100]}, {x: [1], y: [-100]}]);
     getRangesForStats();
-    allStat.each(function() {
+    allStat.each(function () {
         assert.equal(this.value, 1, 'positive number');
         assert.equal(this.min, 1, 'positive number');
         assert.equal(this.max, 1, 'positive number');
     });
 
-    Plotly.newPlot(graphDiv, [{x:[-1], y:[100]}, {x:[-1], y:[-100]}, {x:[-1], y:[-100]}]);
+    Plotly.newPlot(graphDiv, [{x: [-1], y: [100]}, {x: [-1], y: [-100]}, {x: [-1], y: [-100]}]);
     getRangesForStats();
-    allStat.each(function() {
+    allStat.each(function () {
         assert.equal(this.value, -1, 'negative number');
         assert.equal(this.min, -1, 'negative number');
         assert.equal(this.max, -1, 'negative number');
@@ -223,24 +223,24 @@ QUnit.test('getRangesForStats sets min/value to min x. max to max x', function (
     var allStat = $('.statsInput');
     var graphDiv = document.getElementById('plotter');
 
-    Plotly.newPlot(graphDiv, [{x:[1, 2], y:[1, -1]}, {x:[2, 5], y:[-2, 2]}, {x:[3, 4], y:[-3, 3]}]);
+    Plotly.newPlot(graphDiv, [{x: [1, 2], y: [1, -1]}, {x: [2, 5], y: [-2, 2]}, {x: [3, 4], y: [-3, 3]}]);
     getRangesForStats();
-    allStat.each(function() {
+    allStat.each(function () {
         assert.equal(this.value, 1, 'positive number');
         assert.equal(this.min, 1, 'positive number');
         assert.equal(this.max, 5, 'positive number');
     });
 
-    Plotly.newPlot(graphDiv, [{x:[-1, -2], y:[1, -1]}, {x:[-2, -5], y:[-2, 2]}, {x:[-3, -4], y:[-3, 3]}]);
+    Plotly.newPlot(graphDiv, [{x: [-1, -2], y: [1, -1]}, {x: [-2, -5], y: [-2, 2]}, {x: [-3, -4], y: [-3, 3]}]);
     getRangesForStats();
-    allStat.each(function() {
+    allStat.each(function () {
         assert.equal(this.value, -5, 'negative number');
         assert.equal(this.min, -5, 'negative number');
         assert.equal(this.max, -1, 'negative number');
     });
 });
 
-QUnit.test('emptyStatsTable hides all table rows that are not .keeper class', function(assert){
+QUnit.test('emptyStatsTable hides all table rows that are not .keeper class', function (assert) {
     initTest();
     var statsTable = $('#statsTable');
     statsTable.append('<tr><th>removed</th></tr>');
@@ -261,20 +261,22 @@ QUnit.test('emptyStatsTable keeps header elements and removes other elements', f
     emptyStatsTable();
     assert.equal(statsTable.find('td').length, 0);
     var expectedHeaders = ['Table Name', 'Table Range', 'Mean', 'Std Dev'];
-    statsTable.find('th:visible').each( function () {
+    statsTable.find('th:visible').each(function () {
         assert.ok(expectedHeaders.indexOf(this.innerHTML) !== -1, 'table header elements in array, expectedHeaders');
     });
 });
 
 QUnit.test('getTableObjStats', function (assert) {
-    var tableObj = {"name": "<DiceTable containing [1D4  W:10]>",
+    var tableObj = {
+        "name": "<DiceTable containing [1D4  W:10]>",
         "diceStr": 'WeightedDie({1: 1, 4: 9})',
         "data": [[1, 2, 3, 4], [10.0, 20.0, 50.0, 20.0]],
         "tableString": "1: 1\n2: 2\n3: 5\n4: 2\n",
         "forSciNum": {"1": ["1.00000", "0"], "2": ["2.00000", "0"], "3": ["5.00000", "0"], "4": ["2.00000", "0"]},
         "range": [1, 4],
         "mean": 2.8,
-        "stddev": 0.8718};
+        "stddev": 0.8718
+    };
     var expectedColors = [
         '#1f77b4',  // muted blue  rgba(31,119,180, 1)
         '#ff7f0e',  // safety orange  rgba(255,127,14, 1)
@@ -295,16 +297,18 @@ QUnit.test('getTableObjStats', function (assert) {
         tableRange: "<td style='color:black'>1 to 4</td>",
         tableStdDev: "<td style='color:black'>0.8718</td>"
     };
-    function applyColor(baseObj, color){
+
+    function applyColor(baseObj, color) {
         var newObj = {};
         for (var property in baseObj) {
-            if (baseObj.hasOwnProperty(property)){
+            if (baseObj.hasOwnProperty(property)) {
                 newObj[property] = baseObj[property].replace('black', color);
             }
         }
         return newObj;
     }
-    for (var i=0; i< 10; i++){
+
+    for (var i = 0; i < 10; i++) {
         var toTest = applyColor(baseObj, expectedColors[i]);
         assert.deepEqual(toTest, getTableObjStats(tableObj, i));
     }
@@ -312,13 +316,14 @@ QUnit.test('getTableObjStats', function (assert) {
     assert.deepEqual(toTest, getTableObjStats(tableObj, 11), 'color indices loop over color arr');
 });
 
-QUnit.test('getTableObjStats all \\n are replaced by \<\/br\>', function(assert) {
+QUnit.test('getTableObjStats all \\n are replaced by \<\/br\>', function (assert) {
     var tableObj = {
         "name": "<DiceTable containing [1D4]>",
         "diceStr": 'line1\nline2\nline3',
         "range": [1, 4],
         "mean": 2.8,
-        "stddev": 0.8718};
+        "stddev": 0.8718
+    };
     var answer = getTableObjStats(tableObj, 0);
     var expectedName = ("<td class='tooltip' style='color:#1f77b4'>[1D4]" +
         "<span class='tooltiptext'>line1</br>line2</br>line3</span></td>");
@@ -346,47 +351,47 @@ QUnit.test('resetStatsTable', function (assert) {
 
     var expectedHeaders = ['[-2, 3D6]', '[3D4]'];
     var expectedColors = [['#1f77b4', 'rgb(31, 119, 180)'], ['#ff7f0e', 'rgb(255, 127, 14)']];
-    tableName.find('td').each( function (index) {
+    tableName.find('td').each(function (index) {
         assert.equal(this.innerHTML.indexOf(expectedHeaders[index]), 0, 'tableName text');
         assert.ok((this.style.color === expectedColors[index][0] || this.style.color === expectedColors[index][1]),
             'tableName color');
     });
 
     var expectedRange = ['1 to 16', '3 to 12'];
-    tableRange.find('td').each( function(index) {
+    tableRange.find('td').each(function (index) {
         assert.equal(this.innerHTML, expectedRange[index], 'tableRange');
     });
 
     var expectedMean = ['8.5', '7.5'];
-    tableMean.find('td').each( function(index) {
+    tableMean.find('td').each(function (index) {
         assert.equal(this.innerHTML, expectedMean[index], 'tableMean');
     });
 
-    var expectedStdDev = ['2.958','1.9365'];
-    tableStdDev.find('td').each( function(index){
+    var expectedStdDev = ['2.958', '1.9365'];
+    tableStdDev.find('td').each(function (index) {
         assert.equal(this.innerHTML, expectedStdDev[index], 'tablestddev');
     });
 
     table0.data('tableObj', null);
     resetStatsTable();
-    tableName.find('td').each( function (index) {
+    tableName.find('td').each(function (index) {
         assert.equal(this.innerHTML.indexOf('[3D4]'), 0, 'Removed first tableObj - tableName text');
         assert.ok((this.style.color === '#1f77b4' || this.style.color === 'rgb(31, 119, 180)'),
             'Removed first tableObj -tableName color');
         assert.ok(index < 1, 'only one el tableName');
     });
 
-    tableRange.find('td').each( function(index) {
+    tableRange.find('td').each(function (index) {
         assert.equal(this.innerHTML, '3 to 12', 'Removed first tableObj - tableRange');
         assert.ok(index < 1, 'only one el tableRange');
     });
 
-    tableMean.find('td').each( function(index) {
+    tableMean.find('td').each(function (index) {
         assert.equal(this.innerHTML, '7.5', 'Removed first tableObj - tableMean');
         assert.ok(index < 1, 'only one el tableMean');
     });
 
-    tableStdDev.find('td').each( function(index){
+    tableStdDev.find('td').each(function (index) {
         assert.equal(this.innerHTML, '1.9365', 'Removed first tableObj - tablestddev');
         assert.ok(index < 1, 'only one el tableStdDev');
     });
@@ -399,10 +404,9 @@ QUnit.test('getTable assigns tableObj to table according to value', function (as
     table0[0].tableQuery.value = 0;
 
 
-
     var done = assert.async();
     getTable(table0[0]);
-    setTimeout(function() {
+    setTimeout(function () {
         assert.deepEqual(table0.data('tableObj'), fakeAnswer1, 'works?');
         done();
     }, 500);
@@ -410,7 +414,7 @@ QUnit.test('getTable assigns tableObj to table according to value', function (as
     var done2 = assert.async();
     table0[0].tableQuery.value = 2;
     getTable((table0[0]));
-    setTimeout(function() {
+    setTimeout(function () {
         assert.deepEqual(table0.data('tableObj'), fakeAnswer3, 'works?');
         done2();
     }, 500);
@@ -438,7 +442,7 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
         assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data[1], 'one graph y vals');
         assert.equal(graphDiv.data.length, 1, 'one graph data only one length');
 
-        tableName.find('td').each( function (index) {
+        tableName.find('td').each(function (index) {
             assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct');
         });
         done1();
@@ -456,7 +460,7 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
 
         assert.equal(graphDiv.data.length, 2, 'data length 2');
         expectedNames.push('[3D6]');
-        tableName.find('td').each( function (index) {
+        tableName.find('td').each(function (index) {
             assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct 2 names');
         });
         done2();
@@ -464,19 +468,19 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
 
 });
 
-QUnit.test('getTable error code: 400', function(assert) {
+QUnit.test('getTable error code: 400', function (assert) {
     initTest();
     var tempAlert = window.alert;
     var expected = '400: BAD REQUEST\nerror type: royalFuckUp\ndetails: you done fucked up good.';
     var storage = '';
-    window.alert = function(inputStr) {
+    window.alert = function (inputStr) {
         storage = inputStr;
     };
     var table0 = document.getElementById('table-0');
     table0.tableQuery.value = 'a';
     getTable(table0);
     var done = assert.async();
-    setTimeout(function() {
+    setTimeout(function () {
         assert.deepEqual(storage, expected);
         window.alert = tempAlert;
         done();
@@ -505,7 +509,7 @@ QUnit.test('hideTableForm test all actions', function (assert) {
     assert.deepEqual(graphDiv.data[0].y, table1.data('tableObj').data[1], 'graphDiv info is table1 info: y');
     assert.deepEqual($('#tableRequestArea').data('hiddenForms'), ['table-0'],
         'table put back into hiddenforms (testInit() makes "hiddenForms" an empty list)');
-    tableName.find('td').each( function (index) {
+    tableName.find('td').each(function (index) {
         assert.ok(index < 1, 'only one name in tableName');
         assert.equal(this.innerHTML.indexOf('[3D6]'), 0, 'only name is from table-1');
     });
@@ -516,7 +520,7 @@ QUnit.test('removeStatsTraces no presence in data.', function (assert) {
     initTest();
     var graphDiv = document.getElementById('plotter');
     var beforeData = graphDiv.data;
-    Plotly.newPlot(graphDiv, [{x:[2], y:[2]}]);
+    Plotly.newPlot(graphDiv, [{x: [2], y: [2]}]);
     var afterData = graphDiv.data;
     assert.notDeepEqual(beforeData, afterData, 'confirm that data can change');
 
@@ -529,9 +533,9 @@ QUnit.test('removeStatsTraces no presence in data.', function (assert) {
 
 QUnit.test('removeStatsTraces removes traces. relies on special "statsGroup" value', function (assert) {
     initTest();
-    var group1 = [{x: [1], y: [1], name:'1', statsGroup: 'gp1'}, {x: [2], y: [2], name:'2', statsGroup: 'gp1'}];
-    var group2 = [{x: [3], y: [3], name:'3', statsGroup: 'gp2'}, {x: [4], y: [4], name:'4', statsGroup: 'gp2'}];
-    var groupNull = [{x: [5], y: [5], name:'5'}, {x: [6], y: [6], name:'6'}];
+    var group1 = [{x: [1], y: [1], name: '1', statsGroup: 'gp1'}, {x: [2], y: [2], name: '2', statsGroup: 'gp1'}];
+    var group2 = [{x: [3], y: [3], name: '3', statsGroup: 'gp2'}, {x: [4], y: [4], name: '4', statsGroup: 'gp2'}];
+    var groupNull = [{x: [5], y: [5], name: '5'}, {x: [6], y: [6], name: '6'}];
 
     var graphDiv = document.getElementById('plotter');
     Plotly.newPlot(graphDiv, group1);
@@ -564,8 +568,13 @@ QUnit.test('hideStatsForm all actions', function (assert) {
     showHiddenForm(statsArea);
     rowForStats0.show();
 
-    var group1 = [{x: [3], y: [3], name:'3', statsGroup: 'stats-0'}, {x: [4], y: [4], name:'4', statsGroup: 'stats-0'}];
-    var groupNull = [{x: [5], y: [5], name:'5'}, {x: [6], y: [6], name:'6'}];
+    var group1 = [{x: [3], y: [3], name: '3', statsGroup: 'stats-0'}, {
+        x: [4],
+        y: [4],
+        name: '4',
+        statsGroup: 'stats-0'
+    }];
+    var groupNull = [{x: [5], y: [5], name: '5'}, {x: [6], y: [6], name: '6'}];
     var graphDiv = document.getElementById('plotter');
     Plotly.newPlot(graphDiv, group1);
     Plotly.addTraces(graphDiv, groupNull);
@@ -605,23 +614,27 @@ QUnit.test('getRange', function (assert) {
 });
 
 QUnit.test('statsGraphVals', function (assert) {
-    var tableObj = {"repr": "<DiceTable containing [1D4  W:10]>",
+    var tableObj = {
+        "repr": "<DiceTable containing [1D4  W:10]>",
         "diceStr": 'WeightedDie({1: 1, 4: 9})',
         "data": [[1, 2, 3, 4], [10.0, 20.0, 50.0, 20.0]],
         "tableString": "1: 1\n2: 2\n3: 5\n4: 2\n",
         "forSciNum": {"1": ["1.00000", "0"], "2": ["2.00000", "0"], "3": ["5.00000", "0"], "4": ["2.00000", "0"]},
         "range": [1, 4],
         "mean": 2.8,
-        "stddev": 0.8718};
+        "stddev": 0.8718
+    };
 
-    var expected = {x: [1, 2, 3, 4], y: [10.0, 20.0, 50.0, 20.0], type: 'scatter', mode: 'none', fill: 'tozeroy',
-                    hoverinfo: 'skip'};
+    var expected = {
+        x: [1, 2, 3, 4], y: [10.0, 20.0, 50.0, 20.0], type: 'scatter', mode: 'none', fill: 'tozeroy',
+        hoverinfo: 'skip'
+    };
 
     var toTest = statsGraphVals([1, 2, 3, 4], tableObj);
     assert.deepEqual(toTest, expected, 'all x vals');
 
     expected.x = [1.52, 2, 3, 4];
-    expected.y = [(10*0.48 + 20*0.52), 20.0, 50.0, 20.0];
+    expected.y = [(10 * 0.48 + 20 * 0.52), 20.0, 50.0, 20.0];
     toTest = statsGraphVals([2, 3, 4], tableObj);
     assert.deepEqual(toTest, expected, 'query vals higher than min.');
 
@@ -639,7 +652,34 @@ QUnit.test('statsGraphVals', function (assert) {
     expected.y = [10.0, (10 * 0.52 + 20.0 * 0.48)];
     toTest = statsGraphVals([1], tableObj);
     assert.deepEqual(toTest, expected, 'query vals singleton at end.');
+});
 
+
+QUnit.test('statsGraphVals queryVals outside range of tableObj', function (assert) {
+    var tableObj = {
+        "data": [[1, 2], [50.0, 50.0]],
+        "range": [1, 2],
+    };
+
+    var expected = {
+        x: [1, 2], y: [50.0, 50.0],
+        type: 'scatter', mode: 'none', fill: 'tozeroy', hoverinfo: 'skip'
+    };
+
+    var toTest = statsGraphVals([1, 2, 3, 4], tableObj);
+    assert.deepEqual(toTest, expected, 'queryVals max is greater than tableObj range');
+
+    toTest = statsGraphVals([0, 1, 2], tableObj);
+    assert.deepEqual(toTest, expected, 'queryVals min is less than tableObj range');
+
+    const expectedEmpty = {
+        x: [], y: [], type: 'scatter', mode: 'none', fill: 'tozeroy', hoverinfo: 'skip'
+    };
+    toTest = statsGraphVals([-1, 0], tableObj);
+    assert.deepEqual(toTest, expectedEmpty, 'queryVals min and max less than tableObj range');
+
+    toTest = statsGraphVals([3, 4], tableObj);
+    assert.deepEqual(toTest, expectedEmpty, 'queryVals min and max greater than tableObj range');
 
 });
 
@@ -659,9 +699,11 @@ QUnit.test('statsGraphColor relies on the final digit of statsFormId and where g
     assert.equal(statsGraphColor(0, 'randomStuff-1'), 'rgba(41,129,190,0.5)', 'index 0 ending in 1');
     assert.equal(statsGraphColor(1, 'randomStuff-9'), 'rgba(265,127,4,0.5)', 'index 1 ending in 9');
     var allDifferent = [];
-    for (var endDigit = 0; endDigit < 10; endDigit++){allDifferent.push(statsGraphColor(0, 'words-' + endDigit));}
-    for (var i=0; i < 10; i++){
-        for (var j=i+1; j < 10; j++){
+    for (var endDigit = 0; endDigit < 10; endDigit++) {
+        allDifferent.push(statsGraphColor(0, 'words-' + endDigit));
+    }
+    for (var i = 0; i < 10; i++) {
+        for (var j = i + 1; j < 10; j++) {
             assert.notEqual(statsGraphColor(0, 'words-' + i), statsGraphColor(0, 'words-' + j),
                 'color vals different for different form IDs')
         }
@@ -853,7 +895,7 @@ QUnit.test('plotStats', function (assert) {
 
 });
 
-QUnit.test('getToolTipText', function(assert){
+QUnit.test('getToolTipText', function (assert) {
     var statsObj = {
         header: '[1D6]',
         total: "10.00",
@@ -893,8 +935,8 @@ QUnit.test('getTableRow empty entries just return table header', function (asser
 
 QUnit.test('getTableRow with entries', function (assert) {
     initTest();
-    var statsObj0 = {header: '[1D6]',total: "10",occurrences: "2",oneInChance: "5",pctChance: "20"};
-    var statsObj1 = {header: '[2D8]',total: "12",occurrences: "3",oneInChance: "4",pctChance: "25"};
+    var statsObj0 = {header: '[1D6]', total: "10", occurrences: "2", oneInChance: "5", pctChance: "20"};
+    var statsObj1 = {header: '[2D8]', total: "12", occurrences: "3", oneInChance: "4", pctChance: "25"};
     var tooltip0 = getToolTipText(statsObj0);
     var tooltip1 = getToolTipText(statsObj1);
     var header = "<th>0 to 0</th>";
@@ -903,7 +945,7 @@ QUnit.test('getTableRow with entries', function (assert) {
     assert.equal(
         getTableRow(document.getElementById('stats-0'), [statsObj0, statsObj1]),
         header + expected0 + expected1
-        );
+    );
 
 });
 
@@ -913,8 +955,8 @@ QUnit.test('showStatsRow', function (assert) {
     rowForStats0.hide();
     rowForStats0[0].innerHTML = "<th>whoops</th><td>ummmm</td>";
 
-    var statsObj0 = {header: '[1D6]',total: "10",occurrences: "2",oneInChance: "5",pctChance: "20"};
-    var statsObj1 = {header: '[2D8]',total: "12",occurrences: "3",oneInChance: "4",pctChance: "25"};
+    var statsObj0 = {header: '[1D6]', total: "10", occurrences: "2", oneInChance: "5", pctChance: "20"};
+    var statsObj1 = {header: '[2D8]', total: "12", occurrences: "3", oneInChance: "4", pctChance: "25"};
     var allTheText = (
         '20 %occurrences: 2out of total: 10a one in 5 chance25 %occurrences: 3out of total: 12a one in 4 chance'
     );

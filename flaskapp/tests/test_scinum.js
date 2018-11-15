@@ -1,4 +1,3 @@
-
 QUnit.test("new scinum positive", function (assert) {
     var toTestStrs = new SciNum("+1.23", "+456");
     assert.deepEqual(toTestStrs.mantissa, 1.23, "mantissa str ok");
@@ -167,7 +166,9 @@ QUnit.test("toFancyStr large and small regression test", function (assert) {
 });
 
 function makeSNArray(numPairs) {
-    return numPairs.map(function (el) { return new SciNum(el[0], el[1]); });
+    return numPairs.map(function (el) {
+        return new SciNum(el[0], el[1]);
+    });
 }
 
 QUnit.test("helper test function makesSNArray", function (assert) {
@@ -178,8 +179,8 @@ QUnit.test("helper test function makesSNArray", function (assert) {
 QUnit.test("sumSciNum maxPower", function (assert) {
     assert.deepEqual(maxPower([]), -Infinity, "empty array not covered");
     assert.deepEqual(maxPower(makeSNArray([[1.1, 2]])), 2, "single element");
-    assert.deepEqual(maxPower(makeSNArray([ [1.1, 2], [1.1, 30], [1.1, 20]])), 30, "multi elements");
-    assert.deepEqual(maxPower(makeSNArray([ [1.1, -3], [1.1, -2], [1.1, -5] ])), -2, "neg elements");
+    assert.deepEqual(maxPower(makeSNArray([[1.1, 2], [1.1, 30], [1.1, 20]])), 30, "multi elements");
+    assert.deepEqual(maxPower(makeSNArray([[1.1, -3], [1.1, -2], [1.1, -5]])), -2, "neg elements");
 });
 
 QUnit.test("sumSciNum one element", function (assert) {
@@ -191,41 +192,41 @@ QUnit.test("sumSciNum one element", function (assert) {
 
 QUnit.test("sumSciNum multielements all same power", function (assert) {
     var power = 5;
-    var notOverTen = makeSNArray([ [1.1, power], [2.2, power], [3.3, power] ]);
+    var notOverTen = makeSNArray([[1.1, power], [2.2, power], [3.3, power]]);
     assert.deepEqual(sumSciNum(notOverTen), new SciNum(6.6, power), "sum of mantissa lt ten");
-    var overTen = makeSNArray([ [9.9, power], [9.9, power] ]);
+    var overTen = makeSNArray([[9.9, power], [9.9, power]]);
     assert.deepEqual(sumSciNum(overTen), new SciNum(1.98, power + 1), "sum gt ten");
-    var overHundred = makeSNArray([ [99, power], [99, power]]);
+    var overHundred = makeSNArray([[99, power], [99, power]]);
     assert.deepEqual(sumSciNum(overHundred), new SciNum(1.98, power + 2), "sum gt hundred");
 });
 
 QUnit.test("sumSciNum multielements all different power but not over maxPowerDiff", function (assert) {
-    var notOverTen = makeSNArray([ [1.1, 4], [2.2, 3], [3.3, 2] ]);
+    var notOverTen = makeSNArray([[1.1, 4], [2.2, 3], [3.3, 2]]);
     assert.deepEqual(sumSciNum(notOverTen), new SciNum(1.353, 4), "sum of mantissa lt ten");
-    var overTen = makeSNArray([ [9.9, 4], [9.9, 3] ]);
+    var overTen = makeSNArray([[9.9, 4], [9.9, 3]]);
     assert.deepEqual(sumSciNum(overTen), new SciNum(1.089, 5), "sum gt ten");
 });
 
 QUnit.test("sumSciNum multielements all different power over maxPowerDiff", function (assert) {
-    var notOverTen = makeSNArray([ [1.1, 40], [2.2, 39], [3.3, 24] ]);
+    var notOverTen = makeSNArray([[1.1, 40], [2.2, 39], [3.3, 24]]);
     assert.deepEqual(sumSciNum(notOverTen), new SciNum(1.32, 40), "sum of mantissa lt ten");
-    var overTen = makeSNArray([ [9.9, 40], [9.9, 39] , [5, 24]]);
+    var overTen = makeSNArray([[9.9, 40], [9.9, 39], [5, 24]]);
     assert.deepEqual(sumSciNum(overTen), new SciNum(1.089, 41), "sum gt ten");
-    var onlyOneElCounted = makeSNArray([ [-1, 100], [2, 84], [3, 80], [4, -100]]);
+    var onlyOneElCounted = makeSNArray([[-1, 100], [2, 84], [3, 80], [4, -100]]);
     assert.deepEqual(sumSciNum(onlyOneElCounted), new SciNum(-1, 100), "only one element added");
 });
 
 QUnit.test("sumSciNum multielements negative powers negative values", function (assert) {
-    var ltOnegtZero = makeSNArray([ [1, -40], [-2, -41], [3, -44] ]);
+    var ltOnegtZero = makeSNArray([[1, -40], [-2, -41], [3, -44]]);
     assert.deepEqual(sumSciNum(ltOnegtZero), new SciNum(8.003, -41), "sum of mantissa lt one");
-    var negNotOverTen = makeSNArray([ [-1, -1], [-2, -2] , [-3, -3]]);
+    var negNotOverTen = makeSNArray([[-1, -1], [-2, -2], [-3, -3]]);
     assert.deepEqual(sumSciNum(negNotOverTen), new SciNum(-1.23, -1), "sum not lt one");
-    var negOverTen = makeSNArray([ [-9.9, -1], [-2, -2] , [-3, -3]]);
+    var negOverTen = makeSNArray([[-9.9, -1], [-2, -2], [-3, -3]]);
     assert.deepEqual(sumSciNum(negOverTen), new SciNum(-1.013, 0), "sum not lt one");
 });
 
 QUnit.test("sumSciNum sum of mantissa lt one.", function (assert) {
-    var ltOnegtZero = makeSNArray( [ [0.1, 3] , [.02, 4]]);
+    var ltOnegtZero = makeSNArray([[0.1, 3], [.02, 4]]);
     var answer = sumSciNum(ltOnegtZero);
 
     assert.deepEqual(answer.mantissa.toFixed(6), "3.000000", "float math means almost equal");
@@ -233,7 +234,7 @@ QUnit.test("sumSciNum sum of mantissa lt one.", function (assert) {
 });
 
 QUnit.test("sumSciNum zero values", function (assert) {
-    var zeroSum = makeSNArray( [ [0, 3] , [0, 4]]);
+    var zeroSum = makeSNArray([[0, 3], [0, 4]]);
     var answer = sumSciNum(zeroSum);
 
     assert.deepEqual(answer, new SciNum(0, 0));
@@ -243,8 +244,3 @@ QUnit.test("sumSciNum empty arr", function (assert) {
     var answer = sumSciNum([]);
     assert.deepEqual(answer, new SciNum(0, 0));
 });
-
-
-
-
-
