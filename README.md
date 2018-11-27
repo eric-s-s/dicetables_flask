@@ -2,12 +2,12 @@
 
 it's an app that fetches statistics for dice.
 
-
+from parent directory
 ```bash
 $ pip install -r requirements.txt
 ```
 ```bash
-$ export FLASK_APP=myapp.py
+$ export FLASK_APP=flaskapp/myapp.py
 $ flask run
 ```
 
