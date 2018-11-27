@@ -26,45 +26,56 @@
 
 
         <div class="dropdown">
-          <button class="dropbtn">Examples</button>
-          <div class="dropdown-content">
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Die">
-                  <b>Die(6)</b>: a six-sided die</a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ModDie">
-                  <b>ModDie(6, 2)</b>: D6+2</a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.WeightedDie">
-                  <b>WeightedDie({1:1, 2: 2})</b>: a D2 that rolls 2 twice as often as 1</a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ModWeightedDie">
-                  <b>ModWeightedDie({1:1, 2: 2}, 5)</b>: a D2+5 that rolls 7 twice as often as 6</a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.StrongDie">
-                  <b>StrongDie(Die(6), 3)</b>: a die that multiplies containing die.
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Modifier">
-                  <b>Modifier(5)</b>: adds 5 to the overall die roll. 6*Die(3)&Modifier(-10) = (6D3)-10
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Exploding">
-                  <b>Exploding(Die(6))</b>: An exploding D6 re-rolls on a 6 and adds the result
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ExplodingOn">
-                  <b>ExplodingOn(Die(6), (1, ))</b>: An exploding D6 that rolls again on 1
-                  </br><b>ExplodingOn(Die(6), (1, 6))</b>: An exploding D6 that rolls again on 1 and 6
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.BestOfDicePool">
-                  <b>BestOfDicePool(Die(6), 3, 2)</b>: take the 2 best rolls of 3D6
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.WorstOfDicePool">
-                  <b>WorstOfDicePool(Die(6), 4, 2)</b>: take the 2 worst rolls of 4D6
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.UpperMidOfDicePool">
-                  <b>UpperMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
-              </a>
-              <a target="_blank" rel="noopener noreferrer" href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.LowerMidOfDicePool">
-                  <b>LowerMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
-              </a>
+            <button class="dropbtn">Examples</button>
+            <div class="dropdown-content">
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Die">
+                    <b>Die(6)</b>: a six-sided die</a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ModDie">
+                    <b>ModDie(6, 2)</b>: D6+2</a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.WeightedDie">
+                    <b>WeightedDie({1:1, 2: 2})</b>: a D2 that rolls 2 twice as often as 1</a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ModWeightedDie">
+                    <b>ModWeightedDie({1:1, 2: 2}, 5)</b>: a D2+5 that rolls 7 twice as often as 6</a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.StrongDie">
+                    <b>StrongDie(Die(6), 3)</b>: a die that multiplies containing die.
+                </a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Modifier">
+                    <b>Modifier(5)</b>: adds 5 to the overall die roll. 6*Die(3)&Modifier(-10) = (6D3)-10
+                </a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Exploding">
+                    <b>Exploding(Die(6))</b>: An exploding D6 re-rolls on a 6 and adds the result
+                </a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ExplodingOn">
+                    <b>ExplodingOn(Die(6), (1, ))</b>: An exploding D6 that rolls again on 1
+                    <br/><b>ExplodingOn(Die(6), (1, 6))</b>: An exploding D6 that rolls again on 1 and 6
+                </a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.BestOfDicePool">
+                    <b>BestOfDicePool(Die(6), 3, 2)</b>: take the 2 best rolls of 3D6
+                </a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.WorstOfDicePool">
+                    <b>WorstOfDicePool(Die(6), 4, 2)</b>: take the 2 worst rolls of 4D6
+                </a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.UpperMidOfDicePool">
+                    <b>UpperMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
+                </a>
+                <a target="_blank" rel="noopener noreferrer"
+                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.LowerMidOfDicePool">
+                    <b>LowerMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
+                </a>
 
-          </div>
+            </div>
         </div>
-
 
 
         <form class="tableRequest" id="table-0">
@@ -145,71 +156,111 @@
 
         <form id="stats-0" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-1" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-2" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-3" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-4" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-5" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-6" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-7" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-8" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
 
         <form id="stats-9" class="statsRequest">
             <button class="rmStats" type="button">rm</button>
-            <input class='statsInput' title='stats range' name='left' type="number">
-            <input class='statsInput' title='stats range' name='right' type="number">
+            <label>
+                <input class='statsInput' title='stats range' name='left' type="number">
+            </label>
+            <label>
+                <input class='statsInput' title='stats range' name='right' type="number">
+            </label>
             <button type="submit">submit</button>
         </form>
     </div>

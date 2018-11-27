@@ -5,8 +5,8 @@ function SciNum(mantissa, power) {
     this.sigFigs = 4;
 
     this.div = function (other) {
-        var newMantissa = this.mantissa / other.mantissa;
-        var newPow = this.power - other.power;
+        let newMantissa = this.mantissa / other.mantissa;
+        let newPow = this.power - other.power;
         if (Math.abs(newMantissa) < 1) {
             newMantissa *= 10;
             newPow -= 1;
@@ -14,8 +14,8 @@ function SciNum(mantissa, power) {
         return new SciNum(newMantissa, newPow);
     };
     this.mul = function (other) {
-        var newMantissa = this.mantissa * other.mantissa;
-        var newPow = this.power + other.power;
+        let newMantissa = this.mantissa * other.mantissa;
+        let newPow = this.power + other.power;
         if (Math.abs(newMantissa) >= 10) {
             newMantissa /= 10;
             newPow += 1;
@@ -29,12 +29,12 @@ function SciNum(mantissa, power) {
         return parseFloat(this.toString());
     };
     this.toFancyStr = function () {
-        var commaedCutOff = 5;
-        var fixedCutoff = -3;
+        const commaedCutOff = 5;
+        const fixedCutoff = -3;
 
         function scientificNotation(sciNumObj) {
-            var manStr = sciNumObj.mantissa.toFixed(sciNumObj.sigFigs - 1);
-            var powToUse = sciNumObj.power;
+            let manStr = sciNumObj.mantissa.toFixed(sciNumObj.sigFigs - 1);
+            let powToUse = sciNumObj.power;
             if (manStr.indexOf("10.") === 0) {
                 manStr = manStr.replace("10.", "1.");
                 powToUse += 1;
@@ -47,17 +47,17 @@ function SciNum(mantissa, power) {
         }
 
         if (this.mantissa === Infinity || this.mantissa === -Infinity) {
-            var base = '\u221E';
+            const base = '\u221E';
             return (this.mantissa > 0) ? '+' + base : '-' + base;
         }
 
         if (this.power <= commaedCutOff && this.power >= 0) {
-            var sigFigs = Math.max(this.sigFigs, this.power + 1);
-            var answer = this.toNum().toLocaleString(
+            const sigFigs = Math.max(this.sigFigs, this.power + 1);
+            const answer = this.toNum().toLocaleString(
                 'en-US', {maximumSignificantDigits: sigFigs, minimumSignificantDigits: sigFigs}
             );
-            var lenLimit = commaedCutOff + Math.floor(sigFigs / 3);
-            var intLen = answer.split(".")[0].length;
+            const lenLimit = commaedCutOff + Math.floor(sigFigs / 3);
+            const intLen = answer.split(".")[0].length;
             if (intLen > lenLimit) {
                 return scientificNotation(this);
             } else {
@@ -78,11 +78,11 @@ function toSignedStr(num) {
 
 
 function sumSciNum(sciNumArray) {
-    var maxPow = maxPower(sciNumArray);
-    var maxPowerDiff = 15;
-    var newMantissa = 0;
+    let maxPow = maxPower(sciNumArray);
+    const maxPowerDiff = 15;
+    let newMantissa = 0;
     sciNumArray.forEach(function (theNum) {
-        var powerDiff = maxPow - theNum.power;
+        const powerDiff = maxPow - theNum.power;
         if (powerDiff <= maxPowerDiff) {
             newMantissa += theNum.mantissa * Math.pow(10, -powerDiff);
         }

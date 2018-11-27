@@ -1,10 +1,10 @@
 $(onPageLoad);
 
 function onPageLoad() {
-    var allTableForms = $('.tableRequest');
-    var allStatsForms = $('.statsRequest');
-    var tableRequestArea = $('#tableRequestArea');
-    var statRequestArea = $('#statsRequestArea');
+    const allTableForms = $('.tableRequest');
+    const allStatsForms = $('.statsRequest');
+    const tableRequestArea = $('#tableRequestArea');
+    const statRequestArea = $('#statsRequestArea');
 
     allTableForms.submit(function (event) {
         event.preventDefault();
@@ -14,7 +14,7 @@ function onPageLoad() {
 
     allStatsForms.submit(function (event) {
         event.preventDefault();
-        var tableEntries = plotStats(this);
+        const tableEntries = plotStats(this);
         showStatsRow(this, tableEntries);
     });
 
@@ -44,7 +44,7 @@ function onPageLoad() {
 }
 
 function setUpHiddenForms(containerJQuery, classJQuery) {
-    var hiddenForms = [];
+    const hiddenForms = [];
     classJQuery.each(function () {
         $(this).hide();
         hiddenForms.push(this.id);
@@ -54,7 +54,7 @@ function setUpHiddenForms(containerJQuery, classJQuery) {
 }
 
 function getTable(tableForm) {
-    var requestStr = tableForm.tableQuery.value;
+    const requestStr = tableForm.tableQuery.value;
     $.getJSON($SCRIPT_ROOT + '_get_table', {'requestStr': requestStr},
         function (data) {
             console.log(data);
@@ -63,7 +63,8 @@ function getTable(tableForm) {
             resetStatsTable();
         }).fail(function (jqXHR) {
         console.log(jqXHR);
-        var errorJson = jqXHR.responseJSON;
+        /** @namespace jqXHR.responseJSON */
+        const errorJson = jqXHR.responseJSON;
         alert(
             jqXHR.status + ': ' + jqXHR.statusText + '\n' +
             'error type: ' + errorJson.type + '\ndetails: ' + errorJson.error
@@ -72,11 +73,11 @@ function getTable(tableForm) {
 }
 
 function hideTableForm(idStr) {
-    var theForm = $('#' + idStr);
+    const theForm = $('#' + idStr);
     theForm.hide();
     theForm.data('tableObj', null);
     theForm[0].reset();
-    var hiddenForms = $('#tableRequestArea').data('hiddenForms');
+    const hiddenForms = $('#tableRequestArea').data('hiddenForms');
     hiddenForms.push(idStr);
     hiddenForms.sort();
     plotCurrentTables();
@@ -84,10 +85,10 @@ function hideTableForm(idStr) {
 }
 
 function hideStatsForm(idStr) {
-    var theForm = $('#' + idStr);
+    const theForm = $('#' + idStr);
     theForm.hide();
     theForm[0].reset();
-    var hiddenForms = $('#statsRequestArea').data('hiddenForms');
+    const hiddenForms = $('#statsRequestArea').data('hiddenForms');
     hiddenForms.push(idStr);
     hiddenForms.sort();
     removeStatsTraces(idStr);
@@ -95,9 +96,9 @@ function hideStatsForm(idStr) {
 }
 
 function showHiddenForm(requestAreaJQuery) {
-    var hiddenTables = requestAreaJQuery.data('hiddenForms');
+    const hiddenTables = requestAreaJQuery.data('hiddenForms');
     if (hiddenTables.length > 0) {
-        var idStr = hiddenTables.shift();
+        const idStr = hiddenTables.shift();
         $('#' + idStr).show();
         return idStr;
     }
@@ -105,14 +106,14 @@ function showHiddenForm(requestAreaJQuery) {
 }
 
 function plotCurrentTables() {
-    var markersCutOff = 100;
+    const markersCutOff = 100;
 
-    var plotData = [];
+    const plotData = [];
     $('.tableRequest').each(function () {
-        var tableObj = $('#' + this.id).data('tableObj');
+        const tableObj = $('#' + this.id).data('tableObj');
         if (tableObj !== null) {
-            var mode = (tableObj.data[0].length <= markersCutOff) ? "lines+markers" : "lines";
-            var datum = {
+            const mode = (tableObj.data[0].length <= markersCutOff) ? "lines+markers" : "lines";
+            const datum = {
                 x: tableObj.data[0],
                 y: tableObj.data[1],
                 name: getDiceListString(tableObj.name),
@@ -126,19 +127,19 @@ function plotCurrentTables() {
         showlegend: true,
         legend: {x: 1, y: 0.5}
     };
-    var graphDiv = document.getElementById('plotter');
+    const graphDiv = document.getElementById('plotter');
     Plotly.newPlot(graphDiv, plotData, layout);
     getRangesForStats();
 }
 
 function getRangesForStats() {
-    var data = document.getElementById('plotter').data;
-    var min = Infinity;
-    var max = -Infinity;
+    const data = document.getElementById('plotter').data;
+    let min = Infinity;
+    let max = -Infinity;
     data.forEach(function (el) {
-        var xVals = el.x;
-        var elMin = Math.min.apply(null, xVals);
-        var elMax = Math.max.apply(null, xVals);
+        const xVals = el.x;
+        const elMin = Math.min.apply(null, xVals);
+        const elMax = Math.max.apply(null, xVals);
         min = Math.min(min, elMin);
         max = Math.max(max, elMax);
     });
@@ -153,17 +154,17 @@ function getRangesForStats() {
 function resetStatsTable() {
     emptyStatsTable();
 
-    var colorIndex = 0;
+    let colorIndex = 0;
 
-    var tableName = $('#tableName');
-    var tableRange = $('#tableRange');
-    var tableMean = $('#tableMean');
-    var tableStdDev = $('#tableStdDev');
+    const tableName = $('#tableName');
+    const tableRange = $('#tableRange');
+    const tableMean = $('#tableMean');
+    const tableStdDev = $('#tableStdDev');
 
     $('.tableRequest').each(function () {
-        var tableObj = $('#' + this.id).data('tableObj');
+        const tableObj = $('#' + this.id).data('tableObj');
         if (tableObj !== null) {
-            var forStatsTable = getTableObjStats(tableObj, colorIndex);
+            const forStatsTable = getTableObjStats(tableObj, colorIndex);
             colorIndex++;
             tableName.append(forStatsTable['tableName']);
             tableRange.append(forStatsTable['tableRange']);
@@ -174,15 +175,15 @@ function resetStatsTable() {
 }
 
 function emptyStatsTable() {
-    var statsTable = $('#statsTable');
+    const statsTable = $('#statsTable');
     statsTable.find('tr:not(".keeper")').hide();
     statsTable.find('td').remove();
 }
 
 function getTableObjStats(tableObj, index) {
-    var out = {};
+    const out = {};
 
-    var colors = [
+    const colors = [
         '#1f77b4',  // muted blue  rgba(31,119,180, 1)
         '#ff7f0e',  // safety orange  rgba(255,127,14, 1)
         '#2ca02c',  // cooked asparagus green  rgba(44,160,44, 1)
@@ -194,9 +195,9 @@ function getTableObjStats(tableObj, index) {
         '#bcbd22',  // curry yellow-green  rgba(188,189,34, 1)
         '#17becf'  // blue-teal  rgba(23,190,207, 1)
     ];
-    var color = colors[index % colors.length];
-    var name = getDiceListString(tableObj.name);
-    var tooltipText = "<span class='tooltiptext'>" + tableObj.diceStr.replace(/\n/g, '</br>') + "</span>";
+    const color = colors[index % colors.length];
+    const name = getDiceListString(tableObj.name);
+    const tooltipText = "<span class='tooltiptext'>" + tableObj.diceStr.replace(/\n/g, '</br>') + "</span>";
 
     out['tableName'] = "<td class='tooltip' style='color:" + color + "'>" + name + tooltipText + "</td>";
     out['tableRange'] = "<td style='color:" + color + "'>" + tableObj.range[0] + ' to ' + tableObj.range[1] + '</td>';
@@ -208,23 +209,23 @@ function getTableObjStats(tableObj, index) {
 // plotStats and helpers
 function plotStats(statsForm) {
     removeStatsTraces(statsForm.id);
-    var graphDiv = document.getElementById('plotter');
+    const graphDiv = document.getElementById('plotter');
 
-    var queryArr = getRange(statsForm.left.value, statsForm.right.value);
+    const queryArr = getRange(statsForm.left.value, statsForm.right.value);
 
-    var statsData = [];
-    var tableEntries = [];
-    var nonNullDataIndex = 0;
+    const statsData = [];
+    const tableEntries = [];
+    let nonNullDataIndex = 0;
 
     $('.tableRequest').each(function () {
-        var tableObj = $('#' + this.id).data('tableObj');
+        const tableObj = $('#' + this.id).data('tableObj');
         if (tableObj !== null) {
 
-            var forStats = createSciNumObj(tableObj.forSciNum);
-            var statsInfo = getStats(forStats, queryArr);
+            const forStats = createSciNumObj(tableObj.forSciNum);
+            const statsInfo = getStats(forStats, queryArr);
             statsInfo['header'] = getDiceListString(tableObj.name);
 
-            var traceDatum = statsGraphVals(queryArr, tableObj);
+            const traceDatum = statsGraphVals(queryArr, tableObj);
             traceDatum['name'] = statsGraphName(tableObj, statsInfo.pctChance, queryArr);
 
             traceDatum['fillcolor'] = statsGraphColor(nonNullDataIndex, statsForm.id);
@@ -242,9 +243,9 @@ function plotStats(statsForm) {
 }
 
 function removeStatsTraces(statsFormId) {
-    var graphDiv = document.getElementById('plotter');
-    var toRemove = [];
-    for (var i = 0; i < graphDiv.data.length; i++) {
+    const graphDiv = document.getElementById('plotter');
+    const toRemove = [];
+    for (let i = 0; i < graphDiv.data.length; i++) {
         if (graphDiv.data[i].statsGroup === statsFormId) {
             toRemove.push(i);
         }
@@ -253,10 +254,10 @@ function removeStatsTraces(statsFormId) {
 }
 
 function getRange(left, right) {
-    var leftInt = parseInt(left);
-    var rightInt = parseInt(right);
-    var out = [];
-    var stop, start;
+    const leftInt = parseInt(left);
+    const rightInt = parseInt(right);
+    const out = [];
+    let stop, start;
     if (leftInt < rightInt) {
         start = leftInt;
         stop = rightInt;
@@ -264,29 +265,29 @@ function getRange(left, right) {
         start = rightInt;
         stop = leftInt;
     }
-    for (var i = start; i <= stop; i++) {
+    for (let i = start; i <= stop; i++) {
         out.push(i);
     }
     return out;
 }
 
 function statsGraphVals(queryArr, tableObj) {
-    var start = Math.max(queryArr[0], tableObj.range[0]);
-    var stop = Math.min(queryArr[queryArr.length - 1], tableObj.range[1]);
-    var startIndex = tableObj.data[0].indexOf(start);
-    var stopIndex = tableObj.data[0].indexOf(stop);
+    const start = Math.max(queryArr[0], tableObj.range[0]);
+    const stop = Math.min(queryArr[queryArr.length - 1], tableObj.range[1]);
+    const startIndex = tableObj.data[0].indexOf(start);
+    const stopIndex = tableObj.data[0].indexOf(stop);
     if (startIndex === -1 || stopIndex === -1) {
         return {x: [], y: [], type: 'scatter', mode: 'none', fill: 'tozeroy', hoverinfo: 'skip'};
     }
-    var xVals = tableObj.data[0].slice(startIndex, stopIndex + 1);
-    var yVals = tableObj.data[1].slice(startIndex, stopIndex + 1);
+    const xVals = tableObj.data[0].slice(startIndex, stopIndex + 1);
+    const yVals = tableObj.data[1].slice(startIndex, stopIndex + 1);
     if (start > tableObj.range[0]) {
-        var beforeVal = 0.48 * tableObj.data[1][startIndex - 1] + 0.52 * tableObj.data[1][startIndex];
+        const beforeVal = 0.48 * tableObj.data[1][startIndex - 1] + 0.52 * tableObj.data[1][startIndex];
         xVals.unshift(start - 0.48);
         yVals.unshift(beforeVal);
     }
     if (stop < tableObj.range[1]) {
-        var afterVal = 0.48 * tableObj.data[1][stopIndex + 1] + 0.52 * tableObj.data[1][stopIndex];
+        const afterVal = 0.48 * tableObj.data[1][stopIndex + 1] + 0.52 * tableObj.data[1][stopIndex];
         xVals.push(stop + 0.48);
         yVals.push(afterVal);
     }
@@ -294,13 +295,13 @@ function statsGraphVals(queryArr, tableObj) {
 }
 
 function statsGraphName(tableObj, pctString, queryArr) {
-    var tableName = getDiceListString(tableObj.name);
-    var query = (queryArr.length === 1) ? queryArr[0] : queryArr[0] + 'to' + queryArr[queryArr.length - 1];
+    const tableName = getDiceListString(tableObj.name);
+    const query = (queryArr.length === 1) ? queryArr[0] : queryArr[0] + 'to' + queryArr[queryArr.length - 1];
     return tableName + ': [' + query + ']: ' + pctString + '%';
 }
 
 function statsGraphColor(matchGraphIndex, statsFormId) {
-    var colorObjs = [
+    const colorObjs = [
         {'r': 31, 'g': 119, 'b': 180, 'a': 0.5},
         {'r': 255, 'g': 127, 'b': 14, 'a': 0.5},
         {'r': 44, 'g': 160, 'b': 44, 'a': 0.5},
@@ -312,38 +313,38 @@ function statsGraphColor(matchGraphIndex, statsFormId) {
         {'r': 188, 'g': 189, 'b': 34, 'a': 0.5},
         {'r': 23, 'g': 190, 'b': 207, 'a': 0.5}
     ];
-    var rgbaObj = colorObjs[matchGraphIndex];
-    var modValues = [
+    const rgbaObj = colorObjs[matchGraphIndex];
+    const modValues = [
         [0, -10, 10], [10, 10, 10], [-10, -10, -10], [-10, 10, -10], [10, -10, 10],
         [-10, -10, 10], [10, -10, -10], [-10, 10, 10], [10, 10, -10], [10, 0, -10]
     ];
-    var mod = modValues[statsFormId.slice(-1)];
+    const mod = modValues[statsFormId.slice(-1)];
 
     return 'rgba(' + (rgbaObj.r + mod[0]) + ',' + (rgbaObj.g + mod[1]) + ',' + (rgbaObj.b + mod[2]) + ',0.5)';
 }
 
 // showStatsRow
 function showStatsRow(statsForm, tableEntries) {
-    var rowForStats = $('#rowFor-' + statsForm.id);
+    const rowForStats = $('#rowFor-' + statsForm.id);
     rowForStats[0].innerHTML = getTableRow(statsForm, tableEntries);
     rowForStats.show();
 }
 
 function getTableRow(statsForm, tableEntries) {
-    var left = statsForm.left.value;
-    var right = statsForm.right.value;
-    var title = (parseInt(left) < parseInt(right)) ? left + ' to ' + right : right + ' to ' + left;
-    var tableRow = "<th>" + title + "</th>";
-    for (var i = 0; i < tableEntries.length; i++) {
-        var entry = tableEntries[i];
+    const left = statsForm.left.value;
+    const right = statsForm.right.value;
+    const title = (parseInt(left) < parseInt(right)) ? left + ' to ' + right : right + ' to ' + left;
+    let tableRow = "<th>" + title + "</th>";
+    for (let i = 0; i < tableEntries.length; i++) {
+        const entry = tableEntries[i];
         tableRow += "<td class='tooltip'>" + entry.pctChance + ' %' + getToolTipText(entry) + '</td>';
     }
     return tableRow;
 }
 
 function getToolTipText(statsObj) {
-    var start = "<span class='tooltiptext'>";
-    var end = '</span>';
+    const start = "<span class='tooltiptext'>";
+    const end = '</span>';
     return (
         start + 'occurrences: ' + statsObj.occurrences +
         '</br>out of total: ' + statsObj.total +
