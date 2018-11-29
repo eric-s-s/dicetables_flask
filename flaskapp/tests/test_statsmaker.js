@@ -1,21 +1,5 @@
-QUnit.test("makeSciNumArray single element", function (assert) {
-    const posVals = [["+1", "+2"]];
-    assert.deepEqual(makeSciNumArray(posVals), [new SciNum(1, 2)], "single positive value");
-    const negVals = [["-1", "-2"]];
-    assert.deepEqual(makeSciNumArray(negVals), [new SciNum(-1, -2)], "single positive value");
-});
-
-QUnit.test("makeSciNumArray multiple elements", function (assert) {
-    const arrVals = [["+1", "+2"], ["3", "-4"], ["-5.2", "67"], ["-8.9", "-1000"]];
-    assert.deepEqual(
-        makeSciNumArray(arrVals),
-        [new SciNum(1, 2), new SciNum(3, -4), new SciNum(-5.2, 67), new SciNum(-8.9, -1000)],
-        "multiple elements"
-    );
-});
-
 QUnit.test("createStatsObj positive poswers commaed", function (assert) {
-    const arrVals = makeSciNumArray([[1, 4], [2, 3]]);
+    const arrVals = [new SciNum(1, 4), new SciNum(2, 3)];
     const total = new SciNum(2.4, 5);
     const expected = {total: "240,000", occurrences: "12,000", oneInChance: "20.00", pctChance: "5.000"};
     assert.deepEqual(
@@ -26,7 +10,7 @@ QUnit.test("createStatsObj positive poswers commaed", function (assert) {
 });
 
 QUnit.test("createStatsObj large numbers large chance", function (assert) {
-    const arrVals = makeSciNumArray([[1, 0], [1, 100]]);
+    const arrVals = [new SciNum(1, 0), new SciNum(1, 100)];
     const total = new SciNum(2.0000, 100);
     const expected = {total: "2.000e+100", occurrences: "1.000e+100", oneInChance: "2.000", pctChance: "50.00"};
     assert.deepEqual(
@@ -37,7 +21,7 @@ QUnit.test("createStatsObj large numbers large chance", function (assert) {
 });
 
 QUnit.test("createStatsObj large numbers small chance", function (assert) {
-    const arrVals = makeSciNumArray([[4, 100], [1, 100]]);
+    const arrVals = [new SciNum(4, 100), new SciNum(1, 100)];
     const total = new SciNum(2.0000, 10000);
     const expected = {
         total: "2.000e+10000", occurrences: "5.000e+100",
@@ -52,7 +36,7 @@ QUnit.test("createStatsObj large numbers small chance", function (assert) {
 
 QUnit.test("createStatsObj very small numbers", function (assert) {
     const total = new SciNum(1.000, -500);
-    const arrVals = makeSciNumArray([[5.000, -502], [2.000, -501]]);
+    const arrVals = [new SciNum(5.000, -502), new SciNum(2.000, -501)];
     const expected = {
         total: "1.000e-500", occurrences: "2.500e-501",
         oneInChance: "4.000", pctChance: "25.00"
@@ -65,7 +49,7 @@ QUnit.test("createStatsObj very small numbers", function (assert) {
 
 QUnit.test("createStatsObj low positive powers", function (assert) {
     const total = new SciNum(1.000, 2);
-    const arrVals = makeSciNumArray([[5.0, 0], [1.5, 1]]);
+    const arrVals = [new SciNum(5.0, 0), new SciNum(1.5, 1)];
     const expected = {
         total: "100.0", occurrences: "20.00",
         oneInChance: "5.000", pctChance: "20.00"
@@ -78,7 +62,7 @@ QUnit.test("createStatsObj low positive powers", function (assert) {
 
 QUnit.test("createStatsObj zero value", function (assert) {
     const total = new SciNum(1.000, 2);
-    const arrVals = makeSciNumArray([[0, 0], [0, 1]]);
+    const arrVals = [new SciNum(0, 0), new SciNum(0, 1)];
     const expected = {
         total: "100.0", occurrences: "0.000",
         oneInChance: "+\u221E", pctChance: "0.000"

@@ -221,7 +221,7 @@ function plotStats(statsForm) {
         const tableObj = $('#' + this.id).data('tableObj');
         if (tableObj !== null) {
 
-            const forStats = createSciNumObj(tableObj.forSciNum);
+            const forStats = createSciNumObj(tableObj.forSciNum); // TODO two lines to one clear function!
             const statsInfo = getStats(forStats, queryArr);
             statsInfo['header'] = getDiceListString(tableObj.name);
 
