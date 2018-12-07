@@ -91,6 +91,58 @@ QUnit.test("showHiddenForm shows next table", function (assert) {
     assert.ok(table2.is(':visible'), 'table2 visible');
 });
 
+QUnit.test("setUpExample alters text in next open tableForm", function (assert) {
+    $.holdReady(true);
+    onPageLoad();
+    const table_0 = $('#table-0');
+    const table_1 = $('#table-1');
+
+    assert.ok(table_0.is(':visible'));
+    assert.ok(table_1.is(':hidden'));
+
+    const table_element = setUpExample('Die(6)');
+    assert.strictEqual(table_element, table_1[0]);
+
+    assert.ok(table_1.is(':visible'));
+    assert.strictEqual(table_element.tableQuery.value, 'Die(6)');
+});
+
+QUnit.test("setUpExample will write to first visible tableForm if all full", function (assert) {
+    $.holdReady(true);
+    onPageLoad();
+    const table_0 = $('#table-0');
+
+    const testStr = 'test';
+
+    setUpExample(testStr);
+    setUpExample(testStr);
+    assert.notEqual(table_0[0].tableQuery.value, testStr);
+
+    const answer = setUpExample(testStr);
+    assert.strictEqual(answer, table_0[0]);
+    assert.strictEqual(table_0[0].tableQuery.value, testStr);
+
+});
+
+QUnit.test("setUpExample will keep writing to first visible tableForm if all full", function (assert) {
+    $.holdReady(true);
+    onPageLoad();
+    const table_0 = $('#table-0');
+
+    const testStr = 'test';
+    const newTestStr = 'new test';
+
+    setUpExample(testStr);
+    setUpExample(testStr);
+    assert.notEqual(table_0[0].tableQuery.value, testStr);
+
+    setUpExample(testStr);
+    assert.strictEqual(table_0[0].tableQuery.value, testStr);
+
+    setUpExample(newTestStr);
+    assert.strictEqual(table_0[0].tableQuery.value, newTestStr);
+});
+
 
 function initTest() {
     $.holdReady(true);
@@ -487,7 +539,6 @@ QUnit.test('getTable error code: 400', function (assert) {
         done();
     }, 500);
 });
-
 QUnit.test('hideTableForm test all actions', function (assert) {
     initTest();
     const table0 = $('#table-0');

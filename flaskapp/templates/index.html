@@ -28,52 +28,48 @@
         <div class="dropdown">
             <button class="dropbtn">Examples</button>
             <div class="dropdown-content">
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Die">
-                    <b>Die(6)</b>: a six-sided die</a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ModDie">
-                    <b>ModDie(6, 2)</b>: D6+2</a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.WeightedDie">
-                    <b>WeightedDie({1:1, 2: 2})</b>: a D2 that rolls 2 twice as often as 1</a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ModWeightedDie">
-                    <b>ModWeightedDie({1:1, 2: 2}, 5)</b>: a D2+5 that rolls 7 twice as often as 6</a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.StrongDie">
-                    <b>StrongDie(Die(6), 3)</b>: a die that multiplies containing die.
-                </a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Modifier">
-                    <b>Modifier(5)</b>: adds 5 to the overall die roll. 6*Die(3)&Modifier(-10) = (6D3)-10
-                </a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.Exploding">
+                <span class="exampleClickable">
+                    <b>Die(6)</b>: a six-sided die
+                </span>
+                <span class="exampleClickable">
+                    <b>2*Die(4)&3*Die(8)</b>: 2 four-sided dice and 3 eight-sided dice
+                </span>
+                <span class="exampleClickable">
+                    <b>3*ModDie(6, 2)</b>: 3(D6+2)
+                </span>
+                <span class="exampleClickable">
+                    <b>5*WeightedDie({1:1, 2: 2})</b>: 5D2 that roll 2 twice as often as 1
+                </span>
+                <span class="exampleClickable">
+                    <b>5*ModWeightedDie({1:1, 2: 2}, 5)</b>: 5(D2+5) that roll 7 twice as often as 6
+                </span>
+                <span class="exampleClickable">
+                    <b>2*StrongDie(Die(6), 3)</b>: 2 dice that roll D6X3. each die rolls 3, 6, 9, ... 18.
+                </span>
+                <span class="exampleClickable">
+                    <b>2*Die(6)&Modifier(-3)</b>: modifier adds to the overall dice. = 2D6-3
+                </span>
+                <span class="exampleClickable">
                     <b>Exploding(Die(6))</b>: An exploding D6 re-rolls on a 6 and adds the result
-                </a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.dieevents.ExplodingOn">
+                </span>
+                <span class="exampleClickable">
                     <b>ExplodingOn(Die(6), (1, ))</b>: An exploding D6 that rolls again on 1
-                    <br/><b>ExplodingOn(Die(6), (1, 6))</b>: An exploding D6 that rolls again on 1 and 6
-                </a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.BestOfDicePool">
+                </span>
+                <span class="exampleClickable">
+                    <b>ExplodingOn(Die(6), (1, 6))</b>: An exploding D6 that rolls again on 1 and 6
+                </span>
+                <span class="exampleClickable">
                     <b>BestOfDicePool(Die(6), 3, 2)</b>: take the 2 best rolls of 3D6
-                </a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.WorstOfDicePool">
+                </span>
+                <span class="exampleClickable">
                     <b>WorstOfDicePool(Die(6), 4, 2)</b>: take the 2 worst rolls of 4D6
-                </a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.UpperMidOfDicePool">
+                </span>
+                <span class="exampleClickable">
                     <b>UpperMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
-                </a>
-                <a target="_blank" rel="noopener noreferrer"
-                   href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#dicetables.bestworstmid.LowerMidOfDicePool">
+                </span>
+                <span class="exampleClickable">
                     <b>LowerMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
-                </a>
-
+                </span>
             </div>
         </div>
 

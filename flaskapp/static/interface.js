@@ -40,8 +40,14 @@ function onPageLoad() {
     $('.rmTable').click(function () {
         hideTableForm(this.parentNode.id);
     });
+    $('.exampleClickable').click(function () {
+        const exampleText = $(this).find('b').text();
+        const form = setUpExample(exampleText);
+        getTable(form);
+    })
 
 }
+
 
 function setUpHiddenForms(containerJQuery, classJQuery) {
     const hiddenForms = [];
@@ -51,6 +57,18 @@ function setUpHiddenForms(containerJQuery, classJQuery) {
     });
     hiddenForms.sort();
     containerJQuery.data('hiddenForms', hiddenForms);
+}
+
+
+function setUpExample(exampleStr) {
+    const requestArea = $('#tableRequestArea');
+    let nextFormIdStr = showHiddenForm(requestArea);
+    if (nextFormIdStr === null) {
+        nextFormIdStr = $('.tableRequest')[0].id;
+    }
+    const toAlter = document.getElementById(nextFormIdStr);
+    toAlter.tableQuery.value = exampleStr;
+    return toAlter;
 }
 
 function getTable(tableForm) {
