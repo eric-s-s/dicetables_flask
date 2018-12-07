@@ -62,7 +62,7 @@ class DiceTablesRequestHandler(object):
         return self._table
 
     def get_response(self, input_str):
-        errors = (ValueError, SyntaxError, AttributeError, IndexError,
+        errors = (ValueError, SyntaxError, AttributeError, IndexError, TypeError,
                   ParseError, LimitsError, InvalidEventsError, DiceRecordError)
 
         try:

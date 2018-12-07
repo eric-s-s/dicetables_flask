@@ -130,6 +130,9 @@ class TestRequestHandler(unittest.TestCase):
         instructions = '3 * die("a")'
         self.assertRaises(AttributeError, self.handler.request_dice_table_construction, instructions)
 
+        instructions = '3 * moddie(2)'
+        self.assertRaises(TypeError, self.handler.request_dice_table_construction, instructions)
+
         instructions = 'didfde(3)'
         self.assertRaises(ParseError, self.handler.request_dice_table_construction, instructions)
 
@@ -146,12 +149,12 @@ class TestRequestHandler(unittest.TestCase):
         self.assertRaises(DiceRecordError, self.handler.request_dice_table_construction, instructions)
 
     def test_request_dice_table_construction_all_errors_are_caught(self):
-        errors = (ValueError, SyntaxError, AttributeError, IndexError,
+        errors = (ValueError, SyntaxError, AttributeError, IndexError, TypeError,
                   ParseError, LimitsError, InvalidEventsError, DiceRecordError)
         instructions = ['* Die(4)', '3 die(3)', '3 & die(3)', 'Die(4) * 3 * Die(5)', '4 $ die(5)',
                         '2 * die(5) $ 4 * die(6)', 'die("a")', 'die(5', 'die(5000)', 'notadie(5)',
                         'die(1, 2, 3)', 'WeightedDie({1, 2})', 'WeightedDie({-1: 1})', 'Die(-1)',
-                        'WeightedDie({1: -1})', '-2*Die(2)']
+                        'WeightedDie({1: -1})', '-2*Die(2)', 'ModDie(2)']
         for instruction in instructions:
             self.assertRaises(errors, self.handler.request_dice_table_construction, instruction)
 
@@ -277,6 +280,12 @@ class TestRequestHandler(unittest.TestCase):
         response = self.handler.get_response(instructions)
         self.assertEqual(response,
                          {'error': "'Str' object has no attribute 'n'", 'type': 'AttributeError'})
+
+        instructions = '3 * moddie(1)'
+        response = self.handler.get_response(instructions)
+        self.assertEqual(response,
+                         {'error': "__init__() missing 1 required positional argument: 'modifier'",
+                          'type': 'TypeError'})
 
         instructions = 'didfde(3)'
         response = self.handler.get_response(instructions)
