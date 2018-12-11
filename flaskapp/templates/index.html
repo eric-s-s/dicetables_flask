@@ -15,121 +15,144 @@
     <script src="{{ url_for('static', filename='statsmaker.js') }}"></script>
     <script src="{{ url_for('static', filename='interface.js') }}"></script>
 
-
     <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
 
 </head>
 <body>
-<section id="plots">
-    <div id="tableRequestArea">
-        <button id="more">more</button>
 
-
+<ul id="starter">
+    <li>
+        <h1 class="big-line">dicey stuff</h1>
+    </li>
+    <li>
         <div class="dropdown">
-            <button class="dropbtn">Examples</button>
+            <button class="dropbtn">helpful examples &#x25BC;</button>
             <div class="dropdown-content">
-                <span class="exampleClickable">
+                <button class="exampleClickable">
                     <b>Die(6)</b>: a six-sided die
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>2*Die(4)&3*Die(8)</b>: 2 four-sided dice and 3 eight-sided dice
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>3*ModDie(6, 2)</b>: 3(D6+2)
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>5*WeightedDie({1:1, 2: 2})</b>: 5D2 that roll 2 twice as often as 1
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>5*ModWeightedDie({1:1, 2: 2}, 5)</b>: 5(D2+5) that roll 7 twice as often as 6
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>2*StrongDie(Die(6), 3)</b>: 2 dice that roll D6X3. each die rolls 3, 6, 9, ... 18.
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>2*Die(6)&Modifier(-3)</b>: modifier adds to the overall dice. = 2D6-3
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>Exploding(Die(6))</b>: An exploding D6 re-rolls on a 6 and adds the result
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>ExplodingOn(Die(6), (1, ))</b>: An exploding D6 that rolls again on 1
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>ExplodingOn(Die(6), (1, 6))</b>: An exploding D6 that rolls again on 1 and 6
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>BestOfDicePool(Die(6), 3, 2)</b>: take the 2 best rolls of 3D6
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>WorstOfDicePool(Die(6), 4, 2)</b>: take the 2 worst rolls of 4D6
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>UpperMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
-                </span>
-                <span class="exampleClickable">
+                </button>
+                <button class="exampleClickable">
                     <b>LowerMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
-                </span>
+                </button>
             </div>
         </div>
+    </li>
+    <li>
+        <div class="dropdown">
+            <button class="dropbtn">wordy explanations</button>
+            <div class="dropdown-content">
+                <p>{{ intro_text }}</p>
+                <a href="https://dice-tables.readthedocs.io/en/latest/intro.html"
+                   rel="noopener noreferrer" target="_blank">
+                    a quick explanation of the math
+                </a>
+                <a href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#module-dicetables.dieevents"
+                   rel="noopener noreferrer" target="_blank">
+                    docs on die events API
+                </a>
+            </div>
+        </div>
+    </li>
+
+</ul>
+
+<section id="plots">
+    <div id="tableRequestArea">
+        <button id="more">more dice collections</button>
 
 
         <form class="tableRequest" id="table-0">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-1">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-2">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-3">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-4">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-5">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-6">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-7">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-8">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>
         </form>
         <form class="tableRequest" id="table-9">
-            <button type="button" class="rmTable">rm</button>
+            <button type="button" class="rmTable">rm dice collection</button>
             <input type="text" name="tableQuery" title="get table"
                    placeholder="example: 2*Die(6)&3*WeightedDie({1:1, 2:3})">
             <button type="submit">submit</button>

@@ -143,7 +143,9 @@ function plotCurrentTables() {
     const layout = {
         margin: {t: 25},
         showlegend: true,
-        legend: {x: 1, y: 0.5}
+        legend: {x: 1, y: 0.5},
+        xaxis: {title: 'rolls'},
+        yaxis: {title: 'pct chance'}
     };
     const graphDiv = document.getElementById('plotter');
     Plotly.newPlot(graphDiv, plotData, layout);

@@ -1,4 +1,6 @@
 # from dicetables_db import RequestHandler, SQLConnection, MongoDBConnection
+import os
+
 from flask import Flask, jsonify, render_template, request
 
 from flaskapp.dice_tables_tequest_handler import DiceTablesRequestHandler
@@ -21,7 +23,11 @@ def add_numbers():
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    directory = os.path.dirname(__file__)
+    pathanme = os.path.join(directory, 'static', 'intro.txt')
+    with open(pathanme, 'r') as f:
+        contents = f.read()
+    return render_template('index.html', intro_text=contents)
 
 
 if __name__ == '__main__':
