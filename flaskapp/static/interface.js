@@ -145,7 +145,7 @@ function plotCurrentTables() {
         showlegend: true,
         legend: {x: 1, y: 0.5},
         xaxis: {title: 'rolls'},
-        yaxis: {title: 'pct chance'}
+        yaxis: {title: 'pct chance'}  // type: 'log'
     };
     const graphDiv = document.getElementById('plotter');
     Plotly.newPlot(graphDiv, plotData, layout);
@@ -230,6 +230,7 @@ function getTableObjStats(tableObj, index) {
 function plotStats(statsForm) {
     removeStatsTraces(statsForm.id);
     const graphDiv = document.getElementById('plotter');
+    console.log(graphDiv);
 
     const queryArr = getRange(statsForm.left.value, statsForm.right.value);
 

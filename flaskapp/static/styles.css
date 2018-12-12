@@ -10,13 +10,16 @@ section {
     height: 400px;
 }
 
-input[type=text], select {
-    width: 80%;
+.tableRequest {
+    width: 100%;
+    display: flex;
+}
+
+input[type=text] {
+    flex-grow: 1;
     padding: 5px 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    /*box-sizing: border-box;*/
-    /*resize: none;*/
 }
 
 .toLeft {
@@ -124,14 +127,16 @@ tr:nth-child(even) {
 }
 
 #starter {
-  list-style-type: none;
-  padding: 5px;
+    list-style-type: none;
+    padding: 5px;
 }
+
 #starter li {
     display: inline;
     padding: 10px;
 
 }
+
 .big-line {
     display: inline;
 }
