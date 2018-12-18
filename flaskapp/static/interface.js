@@ -230,7 +230,6 @@ function getTableObjStats(tableObj, index) {
 function plotStats(statsForm) {
     removeStatsTraces(statsForm.id);
     const graphDiv = document.getElementById('plotter');
-    console.log(graphDiv);
 
     const queryArr = getRange(statsForm.left.value, statsForm.right.value);
 
