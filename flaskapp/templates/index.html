@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 
-    <link rel="shortcut icon" href="{{ url_for('static', filename='d6_3.ico') }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/d6_3.ico') }}">
     <title>Statistics For Dice</title>
     <meta charset="utf-8"/>
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -21,79 +21,97 @@
 
 </head>
 <body>
-
-<ul id="starter">
-    <li>
-        <h1 class="big-line">dicey stuff</h1>
-    </li>
-    <li>
-        <div class="dropdown">
-            <button class="dropbtn">helpful examples &#x25BC;</button>
-            <div class="dropdown-content">
-                <button class="exampleClickable">
-                    <b>Die(6)</b>: a six-sided die
-                </button>
-                <button class="exampleClickable">
-                    <b>2*Die(4)&3*Die(8)</b>: 2 four-sided dice and 3 eight-sided dice
-                </button>
-                <button class="exampleClickable">
-                    <b>3*ModDie(6, 2)</b>: 3(D6+2)
-                </button>
-                <button class="exampleClickable">
-                    <b>5*WeightedDie({1:1, 2: 2})</b>: 5D2 that roll 2 twice as often as 1
-                </button>
-                <button class="exampleClickable">
-                    <b>5*ModWeightedDie({1:1, 2: 2}, 5)</b>: 5(D2+5) that roll 7 twice as often as 6
-                </button>
-                <button class="exampleClickable">
-                    <b>2*StrongDie(Die(6), 3)</b>: 2 dice that roll D6X3. each die rolls 3, 6, 9, ... 18.
-                </button>
-                <button class="exampleClickable">
-                    <b>2*Die(6)&Modifier(-3)</b>: modifier adds to the overall dice. = 2D6-3
-                </button>
-                <button class="exampleClickable">
-                    <b>Exploding(Die(6))</b>: An exploding D6 re-rolls on a 6 and adds the result
-                </button>
-                <button class="exampleClickable">
-                    <b>ExplodingOn(Die(6), (1, ))</b>: An exploding D6 that rolls again on 1
-                </button>
-                <button class="exampleClickable">
-                    <b>ExplodingOn(Die(6), (1, 6))</b>: An exploding D6 that rolls again on 1 and 6
-                </button>
-                <button class="exampleClickable">
-                    <b>BestOfDicePool(Die(6), 3, 2)</b>: take the 2 best rolls of 3D6
-                </button>
-                <button class="exampleClickable">
-                    <b>WorstOfDicePool(Die(6), 4, 2)</b>: take the 2 worst rolls of 4D6
-                </button>
-                <button class="exampleClickable">
-                    <b>UpperMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
-                </button>
-                <button class="exampleClickable">
-                    <b>LowerMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
-                </button>
-            </div>
+<div id="intro">
+    <div id="title-area">
+        <div id="title-text-box">
+            <h1 class="big-line">Dice Statistics Calculator</h1>
+            <p>
+                {{ intro_text }}
+            </p>
         </div>
-    </li>
-    <li>
-        <div class="dropdown">
-            <button class="dropbtn">wordy explanations</button>
-            <div class="dropdown-content">
-                <p>{{ intro_text }}</p>
-                <a href="https://dice-tables.readthedocs.io/en/latest/intro.html"
-                   rel="noopener noreferrer" target="_blank">
-                    a quick explanation of the math
-                </a>
-                <a href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#module-dicetables.dieevents"
-                   rel="noopener noreferrer" target="_blank">
-                    docs on die events API
-                </a>
-            </div>
+        <div id="title-image-box">
+            <img src="{{ url_for('static', filename='images/lotta_dice.jpg') }}" alt="dice group" id="dice-bag">
         </div>
-    </li>
+    </div>
+    <ul id="starter">
+        <li>
+            <a href="https://dice-tables.readthedocs.io/en/latest/intro.html"
+               rel="noopener noreferrer" target="_blank">
+                Mathematical!
+            </a>
+        </li>
+        <li>
+            <div class="dropdown">
+                <button class="dropbtn">click on the examples &#x25BC;</button>
+                <div class="dropdown-content">
+                    <button class="exampleClickable">
+                        <b>Die(6)</b>: a six-sided die
+                    </button>
+                    <button class="exampleClickable">
+                        <b>2*Die(4)&3*Die(8)</b>: 2 four-sided dice and 3 eight-sided dice
+                    </button>
+                    <button class="exampleClickable">
+                        <b>3*ModDie(6, 2)</b>: 3(D6+2)
+                    </button>
+                    <button class="exampleClickable">
+                        <b>5*WeightedDie({1:1, 2: 2})</b>: 5D2 that roll 2 twice as often as 1
+                    </button>
+                    <button class="exampleClickable">
+                        <b>5*ModWeightedDie({1:1, 2: 2}, 5)</b>: 5(D2+5) that roll 7 twice as often as 6
+                    </button>
+                    <button class="exampleClickable">
+                        <b>2*StrongDie(Die(6), 3)</b>: 2 dice that roll D6X3. each die rolls 3, 6, 9, ... 18.
+                    </button>
+                    <button class="exampleClickable">
+                        <b>2*Die(6)&Modifier(-3)</b>: modifier adds to the overall dice. = 2D6-3
+                    </button>
+                    <button class="exampleClickable">
+                        <b>Exploding(Die(6))</b>: An exploding D6 re-rolls on a 6 and adds the result
+                    </button>
+                    <button class="exampleClickable">
+                        <b>ExplodingOn(Die(6), (1, ))</b>: An exploding D6 that rolls again on 1
+                    </button>
+                    <button class="exampleClickable">
+                        <b>ExplodingOn(Die(6), (1, 6))</b>: An exploding D6 that rolls again on 1 and 6
+                    </button>
+                    <button class="exampleClickable">
+                        <b>BestOfDicePool(Die(6), 3, 2)</b>: take the 2 best rolls of 3D6
+                    </button>
+                    <button class="exampleClickable">
+                        <b>WorstOfDicePool(Die(6), 4, 2)</b>: take the 2 worst rolls of 4D6
+                    </button>
+                    <button class="exampleClickable">
+                        <b>UpperMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
+                    </button>
+                    <button class="exampleClickable">
+                        <b>LowerMidOfDicePool(Die(6), 7, 4)</b>: take the middle four rolls of 7D6
+                    </button>
+                </div>
+            </div>
+        </li>
+        <li>
+            <div class="dropdown">
+                <button class="dropbtn">quickstart</button>
+                <div class="dropdown-content">
+                    <div>
+                        {% for paragraph in instruction_text.split('\n\n') %}
+                            <p>{{ paragraph }}</p>
+                        {% endfor %}
+                    </div>
+                    <a href="https://dice-tables.readthedocs.io/en/latest/intro.html"
+                       rel="noopener noreferrer" target="_blank">
+                        Tell me the math! I love math!
+                    </a>
+                    <a href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#module-dicetables.dieevents"
+                       rel="noopener noreferrer" target="_blank">
+                        I love implementation details for dice!
+                    </a>
+                </div>
+            </div>
+        </li>
 
-</ul>
-
+    </ul>
+</div>
 <section id="plots">
     <div id="tableRequestArea">
         <button id="more">more dice collections</button>

@@ -24,10 +24,14 @@ def add_numbers():
 @app.route('/')
 def index():
     directory = os.path.dirname(__file__)
-    pathanme = os.path.join(directory, 'static', 'intro.txt')
-    with open(pathanme, 'r') as f:
-        contents = f.read()
-    return render_template('index.html', intro_text=contents)
+    instructions_path = os.path.join(directory, 'static', 'instructions.txt')
+    with open(instructions_path, 'r') as f:
+        instructions_text = f.read()
+
+    intro_path = os.path.join(directory, 'static', 'intro.txt')
+    with open(intro_path, 'r') as f:
+        intro_text = f.read()
+    return render_template('index.html', intro_text=intro_text, instruction_text=instructions_text)
 
 
 if __name__ == '__main__':
