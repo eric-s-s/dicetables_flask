@@ -133,7 +133,7 @@ tr:nth-child(even) {
 #title-area > div {
     padding: 10px;
     display: inline;
-    background-color: #86989B;
+    background-color: #dddddd;
     /*flex-grow: 1;*/
 }
 
