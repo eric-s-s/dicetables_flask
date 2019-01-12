@@ -54,28 +54,28 @@
                         <b>2*Die(4)&3*Die(8)</b>: 2 four-sided dice and 3 eight-sided dice
                     </button>
                     <button class="exampleClickable">
-                        <b>3*ModDie(6, 2)</b>: 3(D6+2)
+                        <b>3*ModDie(6, 2)</b>: 3(D6+2) - three * (six-sided die + 2)
                     </button>
                     <button class="exampleClickable">
-                        <b>5*WeightedDie({1:1, 2: 2})</b>: 5D2 that roll 2 twice as often as 1
+                        <b>5*WeightedDie({1:1, 2: 2})</b>: 5 * (2-sided die that rolls 2 twice as often as 1)
                     </button>
                     <button class="exampleClickable">
-                        <b>5*ModWeightedDie({1:1, 2: 2}, 5)</b>: 5(D2+5) that roll 7 twice as often as 6
+                        <b>5*ModWeightedDie({1:1, 2: 2}, 5)</b>: 5(D2+5) = 5*(2-sided die that rolls 7 (2+5) twice as often as 6 (1+5)
                     </button>
                     <button class="exampleClickable">
                         <b>2*StrongDie(Die(6), 3)</b>: 2 dice that roll D6X3. each die rolls 3, 6, 9, ... 18.
                     </button>
                     <button class="exampleClickable">
-                        <b>2*Die(6)&Modifier(-3)</b>: modifier adds to the overall dice. = 2D6-3
+                        <b>2*Die(6)&Modifier(-3)</b>: modifier adds to the overall dice. = 2D6+3 (2 six-sided dice + 3)
                     </button>
                     <button class="exampleClickable">
-                        <b>Exploding(Die(6))</b>: An exploding D6 re-rolls on a 6 and adds the result
+                        <b>Exploding(Die(6))</b>: An exploding D6 is a six-sided die that you get to keep rolling every time you roll a six
                     </button>
                     <button class="exampleClickable">
-                        <b>ExplodingOn(Die(6), (1, ))</b>: An exploding D6 that rolls again on 1
+                        <b>ExplodingOn(Die(6), (1, ))</b>: As above, except you get to keep rolling every time you roll 1
                     </button>
                     <button class="exampleClickable">
-                        <b>ExplodingOn(Die(6), (1, 6))</b>: An exploding D6 that rolls again on 1 and 6
+                        <b>ExplodingOn(Die(6), (1, 6))</b>: As above, except you get to keep rolling every time you roll 1 or 6
                     </button>
                     <button class="exampleClickable">
                         <b>BestOfDicePool(Die(6), 3, 2)</b>: take the 2 best rolls of 3D6
@@ -101,9 +101,9 @@
                             <p>{{ paragraph }}</p>
                         {% endfor %}
                     </div>
-                    <a href="https://dice-tables.readthedocs.io/en/latest/intro.html"
+                    <a href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#some-example-dice"
                        rel="noopener noreferrer" target="_blank">
-                        Tell me the math! I love math!
+                        I don't want to click on the "click on the examples" but I still want examples.
                     </a>
                     <a href="https://dice-tables.readthedocs.io/en/latest/the_dice.html#module-dicetables.dieevents"
                        rel="noopener noreferrer" target="_blank">
@@ -111,6 +111,18 @@
                     </a>
                 </div>
             </div>
+        </li>
+        <li>
+            <a href="https://github.com/eric-s-s/dicetables_flask/issues"
+               rel="noopener noreferrer" target="_blank">
+                have issues or suggestions for front-end? start a new issue here
+            </a>
+        </li>
+        <li>
+            <a href="https://github.com/eric-s-s/dice-tables/issues"
+               rel="noopener noreferrer" target="_blank">
+               back-end issues page is here
+            </a>
         </li>
 
     </ul>

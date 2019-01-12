@@ -146,8 +146,10 @@ tr:nth-child(even) {
 }
 
 #dice-bag {
-    width: 100%;
+    width: auto;
     height: 100%;
+    max-width: 100%;
+    object-fit: cover;
 }
 
 
