@@ -45,7 +45,7 @@
         </li>
         <li>
             <div class="dropdown">
-                <button class="dropbtn">click on the examples &#x25BC;</button>
+                <button class="dropbtn">Click On The Examples &#x25BC;</button>
                 <div class="dropdown-content">
                     <button class="exampleClickable">
                         <b>Die(6)</b>: a six-sided die
@@ -60,7 +60,8 @@
                         <b>5*WeightedDie({1:1, 2: 2})</b>: 5 * (2-sided die that rolls 2 twice as often as 1)
                     </button>
                     <button class="exampleClickable">
-                        <b>5*ModWeightedDie({1:1, 2: 2}, 5)</b>: 5(D2+5) = 5*(2-sided die that rolls 7 (2+5) twice as often as 6 (1+5)
+                        <b>5*ModWeightedDie({1:1, 2: 2}, 5)</b>: 5(D2+5) = 5*(2-sided die that rolls 7 (2+5) twice as
+                        often as 6 (1+5)
                     </button>
                     <button class="exampleClickable">
                         <b>2*StrongDie(Die(6), 3)</b>: 2 dice that roll D6X3. each die rolls 3, 6, 9, ... 18.
@@ -69,13 +70,16 @@
                         <b>2*Die(6)&Modifier(-3)</b>: modifier adds to the overall dice. = 2D6+3 (2 six-sided dice + 3)
                     </button>
                     <button class="exampleClickable">
-                        <b>Exploding(Die(6))</b>: An exploding D6 is a six-sided die that you get to keep rolling every time you roll a six
+                        <b>Exploding(Die(6))</b>: An exploding D6 is a six-sided die that you get to keep rolling every
+                        time you roll a six
                     </button>
                     <button class="exampleClickable">
-                        <b>ExplodingOn(Die(6), (1, ))</b>: As above, except you get to keep rolling every time you roll 1
+                        <b>ExplodingOn(Die(6), (1, ))</b>: As above, except you get to keep rolling every time you roll
+                        1
                     </button>
                     <button class="exampleClickable">
-                        <b>ExplodingOn(Die(6), (1, 6))</b>: As above, except you get to keep rolling every time you roll 1 or 6
+                        <b>ExplodingOn(Die(6), (1, 6))</b>: As above, except you get to keep rolling every time you roll
+                        1 or 6
                     </button>
                     <button class="exampleClickable">
                         <b>BestOfDicePool(Die(6), 3, 2)</b>: take the 2 best rolls of 3D6
@@ -94,8 +98,8 @@
         </li>
         <li>
             <div class="dropdown">
-                <button class="dropbtn">quickstart</button>
-                <div class="dropdown-content">
+                <button class="dropbtn">Quickstart</button>
+                <div class="dropdown-content to-the-right">
                     <div>
                         {% for paragraph in instruction_text.split('\n\n') %}
                             <p>{{ paragraph }}</p>
@@ -113,18 +117,26 @@
             </div>
         </li>
         <li>
-            <a href="https://github.com/eric-s-s/dicetables_flask/issues"
-               rel="noopener noreferrer" target="_blank">
-                have issues or suggestions for front-end? start a new issue here
-            </a>
-        </li>
-        <li>
-            <a href="https://github.com/eric-s-s/dice-tables/issues"
-               rel="noopener noreferrer" target="_blank">
-               back-end issues page is here
-            </a>
-        </li>
+            <div class="dropdown">
+                <button class="dropbtn">Report a Bug</button>
+                <div class="dropdown-content to-the-right">
+                    <p>Filing issues requires a github account.</p>
+                    <div>
+                        <a href="https://github.com/eric-s-s/dicetables_flask/issues"
+                           rel="noopener noreferrer" target="_blank">
+                            Have issues or suggestions for front-end? Start a new issue here.
+                        </a>
+                    </div>
+                    <div>
+                        <a href="https://github.com/eric-s-s/dice-tables/issues"
+                           rel="noopener noreferrer" target="_blank">
+                            Found a math problem or want to see a feature? Back-end issues here.
+                        </a>
+                    </div>
+                </div>
 
+            </div>
+        </li>
     </ul>
 </div>
 <section id="plots">

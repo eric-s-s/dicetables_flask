@@ -86,19 +86,34 @@ tr:nth-child(even) {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    min-width: 560px;
+    width: 500px;
+    max-width: 40vw;
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     z-index: 1;
+}
+
+@media only screen and (max-width: 1100px) {
+    .to-the-right {
+        right: 0;
+    }
+}
+
+/* Show the dropdown menu on hover */
+.dropdown:hover .dropdown-content {
+    display: block;
 }
 
 /* Links inside the dropdown */
 
 .dropdown-content > * {
-    padding: 5px 5px;
+    padding: 5px 5px 5px 5px;
     display: block;
     text-align: left;
     border: none;
-    width: 100%;
+}
+
+.dropdown-content p, .dropdown-content a {
+    padding: 10px;
 }
 
 .dropdown-content .exampleClickable {
@@ -107,19 +122,11 @@ tr:nth-child(even) {
     background-color: #f9f9f9;
 }
 
-.dropdown-content p {
-    width: 95%;
-}
-
 /* Change color of dropdown links on hover */
 .dropdown-content .exampleClickable:hover {
     background-color: #f1f1f1
 }
 
-/* Show the dropdown menu on hover */
-.dropdown:hover .dropdown-content {
-    display: block;
-}
 
 /* Change the background color of the dropdown button when the dropdown content is shown */
 .dropdown:hover .dropbtn {
