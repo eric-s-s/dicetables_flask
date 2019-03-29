@@ -147,18 +147,19 @@ def slice_number(number, slice_size):
 
 def randrange_slices(number, slice_size):
     slicer = slice_number(number, slice_size)
-    use_slice_range = True
+    first_slice, power_of_ten_for_slice = next(slicer)
+    random_slice = randrange(first_slice)
+    yield random_slice, power_of_ten_for_slice
+
+    use_slice_range = random_slice + 1 == first_slice
     for slice_range, power_of_ten_for_slice in slicer:
         if use_slice_range:
-            if is_next_lower_digit_zero(number, power_of_ten_for_slice):
-                random_slice = randrange(slice_range)
-            else:
-                random_slice = randrange(slice_range + 1)
+            new_slice_range = 10**slice_size + slice_range
+            random_slice = randrange(new_slice_range)
+            use_slice_range = random_slice + 1 == new_slice_range
         else:
             random_slice = randrange(10**slice_size)
 
-        if use_slice_range and random_slice != slice_range:
-            use_slice_range = False
         yield random_slice, power_of_ten_for_slice
 
 
@@ -228,10 +229,12 @@ class TestSliceNumberGenerators(unittest.TestCase):
 
     def test_randrange_slices_number_greater_than_slice_size(self):
         random.seed(2938)
-        number = 21
+        number = 50
         slice_size = 1
-        for _ in range(100):
-            print(list(randrange_slices(number, slice_size)))
+        for _ in range(1000):
+            random_list = list(randrange_slices(number, slice_size))
+            numbers = [val * 10 ** power for val, power in random_list]
+            print(sum(numbers))
 
     # def test_randrange_slices_problem(self):
     #     random.seed(2378)
@@ -239,3 +242,6 @@ class TestSliceNumberGenerators(unittest.TestCase):
     #     slice_size = 1
     #     for _ in range(10):
     #         print(list(randrange_slices(number, slice_size)))
+
+if __name__ == '__main__':
+    unittest.main()
