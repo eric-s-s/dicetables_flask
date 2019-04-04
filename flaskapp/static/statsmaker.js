@@ -1,5 +1,9 @@
 // TODO getStats should be renamed to statsMaker and be sole exported function
 
+function createStatsObj(queryArray, ) {
+
+}
+
 function createSciNumObj(rollsToMantissaPowerObj) {
     const outObj = {};
     const forTotal = [];
