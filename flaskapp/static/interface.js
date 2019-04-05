@@ -130,10 +130,10 @@ function plotCurrentTables() {
     $('.tableRequest').each(function () {
         const tableObj = $('#' + this.id).data('tableObj');
         if (tableObj !== null) {
-            const mode = (tableObj.data[0].length <= markersCutOff) ? "lines+markers" : "lines";
+            const mode = (tableObj.data.x.length <= markersCutOff) ? "lines+markers" : "lines";
             const datum = {
-                x: tableObj.data[0],
-                y: tableObj.data[1],
+                x: tableObj.data.x,
+                y: tableObj.data.y,
                 name: getDiceListString(tableObj.name),
                 mode: mode
             };
@@ -294,20 +294,20 @@ function getRange(left, right) {
 function statsGraphVals(queryArr, tableObj) {
     const start = Math.max(queryArr[0], tableObj.range[0]);
     const stop = Math.min(queryArr[queryArr.length - 1], tableObj.range[1]);
-    const startIndex = tableObj.data[0].indexOf(start);
-    const stopIndex = tableObj.data[0].indexOf(stop);
+    const startIndex = tableObj.data.x.indexOf(start);
+    const stopIndex = tableObj.data.x.indexOf(stop);
     if (startIndex === -1 || stopIndex === -1) {
         return {x: [], y: [], type: 'scatter', mode: 'none', fill: 'tozeroy', hoverinfo: 'skip'};
     }
-    const xVals = tableObj.data[0].slice(startIndex, stopIndex + 1);
-    const yVals = tableObj.data[1].slice(startIndex, stopIndex + 1);
+    const xVals = tableObj.data.x.slice(startIndex, stopIndex + 1);
+    const yVals = tableObj.data.y.slice(startIndex, stopIndex + 1);
     if (start > tableObj.range[0]) {
-        const beforeVal = 0.48 * tableObj.data[1][startIndex - 1] + 0.52 * tableObj.data[1][startIndex];
+        const beforeVal = 0.48 * tableObj.data.y[startIndex - 1] + 0.52 * tableObj.data.y[startIndex];
         xVals.unshift(start - 0.48);
         yVals.unshift(beforeVal);
     }
     if (stop < tableObj.range[1]) {
-        const afterVal = 0.48 * tableObj.data[1][stopIndex + 1] + 0.52 * tableObj.data[1][stopIndex];
+        const afterVal = 0.48 * tableObj.data.y[stopIndex + 1] + 0.52 * tableObj.data.y[stopIndex];
         xVals.push(stop + 0.48);
         yVals.push(afterVal);
     }

@@ -38,8 +38,8 @@ QUnit.test("onPageLoad all tableObj 'data('tableObj') = null", function (assert)
 //     $.holdReady(true);
 //     onPageLoad();
 //     var graphData = document.getElementById('plotter').data;
-//     assert.deepEqual(graphData[0].x, fakeAnswer1.data[0]);
-//     assert.deepEqual(graphData[0].y, fakeAnswer1.data[1]);
+//     assert.deepEqual(graphData[0].x, fakeAnswer1.data.x);
+//     assert.deepEqual(graphData[0].y, fakeAnswer1.data.y);
 //     assert.equal(graphData.length, 1);
 // });
 
@@ -182,10 +182,10 @@ QUnit.test('plotCurrentTables tables have data', function (assert) {
     plotCurrentTables();
     const graphData = document.getElementById('plotter').data;
     assert.equal(graphData.length, 2);
-    assert.equal(graphData[0].x, fakeAnswer3.data[0]);
-    assert.equal(graphData[0].y, fakeAnswer3.data[1]);
-    assert.equal(graphData[1].x, fakeAnswer1.data[0]);
-    assert.equal(graphData[1].y, fakeAnswer1.data[1]);
+    assert.equal(graphData[0].x, fakeAnswer3.data.x);
+    assert.equal(graphData[0].y, fakeAnswer3.data.y);
+    assert.equal(graphData[1].x, fakeAnswer1.data.x);
+    assert.equal(graphData[1].y, fakeAnswer1.data.y);
 });
 
 QUnit.test('plotCurrentTables tables gets new min and max', function (assert) {
@@ -220,12 +220,12 @@ QUnit.test('plotCurrentTables mode set according to cutoff', function (assert) {
     const tableObj0 = {
         "name": "object0",
         "diceStr": 'object0',
-        "data": [xVals0, yVals0]
+        "data": {"x": xVals0, "y": yVals0}
     };
     const tableObj1 = {
         "name": "object1",
         "diceStr": 'object1',
-        "data": [xVals1, yVals1]
+        "data": {x: xVals1, y: yVals1}
     };
     $('#table-0').data('tableObj', tableObj0);
     $('#table-1').data('tableObj', tableObj1);
@@ -491,8 +491,8 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
     const done1 = assert.async();
     const expectedNames = ['[3D4]'];
     setTimeout(function () {
-        assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data[0], 'one graph x vals');
-        assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data[1], 'one graph y vals');
+        assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data.x, 'one graph x vals');
+        assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data.y, 'one graph y vals');
         assert.equal(graphDiv.data.length, 1, 'one graph data only one length');
 
         tableName.find('td').each(function (index) {
@@ -505,11 +505,11 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
     getTable(document.getElementById('table-1'));
     const done2 = assert.async();
     setTimeout(function () {
-        assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data[0], 'first graph x vals');
-        assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data[1], 'first graph y vals');
+        assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data.x, 'first graph x vals');
+        assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data.y, 'first graph y vals');
 
-        assert.deepEqual(graphDiv.data[1].x, fakeAnswer2.data[0], 'second graph x vals');
-        assert.deepEqual(graphDiv.data[1].y, fakeAnswer2.data[1], 'second graph y vals');
+        assert.deepEqual(graphDiv.data[1].x, fakeAnswer2.data.x, 'second graph x vals');
+        assert.deepEqual(graphDiv.data[1].y, fakeAnswer2.data.y, 'second graph y vals');
 
         assert.equal(graphDiv.data.length, 2, 'data length 2');
         expectedNames.push('[3D6]');
@@ -557,8 +557,8 @@ QUnit.test('hideTableForm test all actions', function (assert) {
     assert.ok(table0.is(':hidden'), 'tableForm is hidden');
     assert.strictEqual(table0.data('tableObj'), null, 'tableForm data set to null');
     assert.equal(graphDiv.data.length, 1, 'graphDiv doesn\'t contain the graph');
-    assert.deepEqual(graphDiv.data[0].x, table1.data('tableObj').data[0], 'graphDiv info is table1 info: x');
-    assert.deepEqual(graphDiv.data[0].y, table1.data('tableObj').data[1], 'graphDiv info is table1 info: y');
+    assert.deepEqual(graphDiv.data[0].x, table1.data('tableObj').data.x, 'graphDiv info is table1 info: x');
+    assert.deepEqual(graphDiv.data[0].y, table1.data('tableObj').data.y, 'graphDiv info is table1 info: y');
     assert.deepEqual($('#tableRequestArea').data('hiddenForms'), ['table-0'],
         'table put back into hiddenforms (testInit() makes "hiddenForms" an empty list)');
     tableName.find('td').each(function (index) {
@@ -669,9 +669,14 @@ QUnit.test('statsGraphVals', function (assert) {
     const tableObj = {
         "repr": "<DiceTable containing [1D4  W:10]>",
         "diceStr": 'WeightedDie({1: 1, 4: 9})',
-        "data": [[1, 2, 3, 4], [10.0, 20.0, 50.0, 20.0]],
+        "data": {x: [1, 2, 3, 4], y: [10.0, 20.0, 50.0, 20.0]},
         "tableString": "1: 1\n2: 2\n3: 5\n4: 2\n",
-        "forSciNum": {"1": ["1.00000", "0"], "2": ["2.00000", "0"], "3": ["5.00000", "0"], "4": ["2.00000", "0"]},
+        "forSciNum": [
+            {roll: "1", mantissa: "1.00000", exponent: "0"},
+            {roll: "2", mantissa: "2.00000", exponent: "0"},
+            {roll: "3", mantissa: "5.00000", exponent: "0"},
+            {roll: "4", mantissa: "2.00000", exponent: "0"}
+        ],
         "range": [1, 4],
         "mean": 2.8,
         "stddev": 0.8718
@@ -709,7 +714,7 @@ QUnit.test('statsGraphVals', function (assert) {
 
 QUnit.test('statsGraphVals queryVals outside range of tableObj', function (assert) {
     const tableObj = {
-        "data": [[1, 2], [50.0, 50.0]],
+        "data": {x: [1, 2], y: [50.0, 50.0]},
         "range": [1, 2],
     };
 

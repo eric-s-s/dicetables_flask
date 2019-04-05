@@ -74,7 +74,7 @@ QUnit.test("createStatsObj zero value", function (assert) {
 });
 
 QUnit.test("createSciNumObj", function (assert) {
-    const inputObj = {'1': ['1.23', '10'], '2': ['1.23', '11']};
+    const inputObj = [{roll: '1', mantissa: '1.23', exponent: '10'}, {roll: '2', mantissa: '1.23', exponent: '11'}];
     const expected = {
         '1': new SciNum('1.23', '10'), 2: new SciNum('1.23', '11'),
         'total': new SciNum(1.353, 11)
@@ -84,7 +84,7 @@ QUnit.test("createSciNumObj", function (assert) {
 });
 
 QUnit.test("createSciNumObj values are nums", function (assert) {
-    const inputObj = {1: [1.23, 10], 2: [1.23, 11]};
+    const inputObj = [{roll: 1, mantissa: 1.23, exponent: 10}, {roll: 2, mantissa: 1.23, exponent: 11}];
     const expected = {
         '1': new SciNum('1.23', '10'), 2: new SciNum('1.23', '11'),
         'total': new SciNum(1.353, 11)

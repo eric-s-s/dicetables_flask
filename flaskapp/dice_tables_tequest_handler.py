@@ -78,11 +78,12 @@ def make_dict(dice_table: DiceTable):
     out['diceStr'] = '\n'.join(['{!r}: {}'.format(die, number) for die, number in dice_table.get_list()])
     out['name'] = repr(dice_table)
 
-    out['data'] = calc.percentage_axes()
+    x_axis, y_axis = calc.percentage_axes()
+    out['data'] = {'x': x_axis, 'y': y_axis}
     out['tableString'] = calc.full_table_string()
 
     lines = calc.full_table_string(6, -1).split('\n')
-    for_scinum = {int(key): value.split('e+') for key, value in (el.split(': ') for el in lines if el)}
+    for_scinum = [_get_json(el) for el in lines if el]
 
     out['forSciNum'] = for_scinum
 
@@ -90,3 +91,10 @@ def make_dict(dice_table: DiceTable):
     out['mean'] = round(calc.mean(), 3)
     out['stddev'] = calc.stddev(3)
     return out
+
+
+def _get_json(full_table_str_line):
+    roll, number = full_table_str_line.split(': ')
+    mantissa, exponent = number.split('e+')
+    return {'roll': int(roll), 'mantissa': mantissa, 'exponent': exponent}
+
