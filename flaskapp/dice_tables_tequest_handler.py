@@ -97,4 +97,3 @@ def _get_json(full_table_str_line):
     roll, number = full_table_str_line.split(': ')
     mantissa, exponent = number.split('e+')
     return {'roll': int(roll), 'mantissa': mantissa, 'exponent': exponent}
-

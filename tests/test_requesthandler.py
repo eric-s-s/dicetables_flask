@@ -239,10 +239,6 @@ class TestRequestHandler(unittest.TestCase):
             'mean': 13.97,
             'stddev': 1.642
         }
-        for key, value in expected.items():
-            if answer[key] != value:
-                print(value)
-                print(answer[key])
 
         self.assertEqual(answer, expected)
 
