@@ -386,8 +386,8 @@ QUnit.test('resetStatsTable', function (assert) {
 
     const table0 = $("#table-0");
 
-    table0.data('tableObj', testResponse0); // [1d3] "range": [1, 16], "mean": 8.5, "stddev": 2.958
-    $('#table-1').data('tableObj', testResponse2); // [3D4] 'stddev': 1.9365, 'mean': 7.5, 'range': [3, 12]
+    table0.data('tableObj', testResponse0);
+    $('#table-1').data('tableObj', testResponse2);
     $('#rowFor-stats-0').show();
 
     resetStatsTable();
@@ -747,10 +747,6 @@ QUnit.test('statsGraphName tableObj has set name, pctString is any str and query
 QUnit.test('statsGraphColor relies on the final digit of statsFormId and where graph is in index', function (assert) {
     assert.equal(statsGraphColor(0, 'randomStuff-1'), 'rgba(41,129,190,0.5)', 'index 0 ending in 1');
     assert.equal(statsGraphColor(1, 'randomStuff-9'), 'rgba(265,127,4,0.5)', 'index 1 ending in 9');
-    let allDifferent = [];
-    for (let endDigit = 0; endDigit < 10; endDigit++) {
-        allDifferent.push(statsGraphColor(0, 'words-' + endDigit));
-    }
     for (let i = 0; i < 10; i++) {
         for (let j = i + 1; j < 10; j++) {
             assert.notEqual(statsGraphColor(0, 'words-' + i), statsGraphColor(0, 'words-' + j),
