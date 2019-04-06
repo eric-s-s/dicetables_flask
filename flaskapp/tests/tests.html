@@ -20,7 +20,8 @@
                         'type': 'royalFuckUp'
                     }
                 } else {
-                    this.responseText = fakeList[parseInt(settings.data.requestStr)];
+                    const testResponseList = [testResponse0, testResponse1, testResponse2, testResponse3];
+                    this.responseText = testResponseList[parseInt(settings.data.requestStr)];
                 }
             }
         });
@@ -130,12 +131,15 @@
 </div>
 
 <script src="https://code.jquery.com/qunit/qunit-2.4.0.js"></script>
+<script src="../static/BigInteger.min.js"></script>
+<script src="../static/roller.js"></script>
 <script src="../static/scinum.js"></script>
 <script src="../static/statsmaker.js"></script>
-<script src="../static/fakedata.js"></script>
+<script src="../static/testData.js"></script>
 <script src="../static/interface.js"></script>
 
 <script src="test_scinum.js"></script>
+<script src="test_roller.js"></script>
 <script src="test_statsmaker.js"></script>
 <script src="test_interface.js"></script>
 </body>

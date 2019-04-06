@@ -74,7 +74,7 @@ QUnit.test("createStatsObj zero value", function (assert) {
 });
 
 QUnit.test("createSciNumObj", function (assert) {
-    const inputObj = {'1': ['1.23', '10'], '2': ['1.23', '11']};
+    const inputObj = [{roll: '1', mantissa: '1.23', exponent: '10'}, {roll: '2', mantissa: '1.23', exponent: '11'}];
     const expected = {
         '1': new SciNum('1.23', '10'), 2: new SciNum('1.23', '11'),
         'total': new SciNum(1.353, 11)
@@ -84,7 +84,7 @@ QUnit.test("createSciNumObj", function (assert) {
 });
 
 QUnit.test("createSciNumObj values are nums", function (assert) {
-    const inputObj = {1: [1.23, 10], 2: [1.23, 11]};
+    const inputObj = [{roll: 1, mantissa: 1.23, exponent: 10}, {roll: 2, mantissa: 1.23, exponent: 11}];
     const expected = {
         '1': new SciNum('1.23', '10'), 2: new SciNum('1.23', '11'),
         'total': new SciNum(1.353, 11)
@@ -116,45 +116,45 @@ QUnit.test("getSciNumValue obj doesn't have value", function (assert) {
 
 });
 
-QUnit.test("getStats arr is all keys in obj", function (assert) {
+QUnit.test("getStatsFromSciNumObj arr is all keys in obj", function (assert) {
     const sciNumObj = {1: new SciNum(1, 1), 2: new SciNum(2, 1), 3: new SciNum(2, 1), total: new SciNum(5, 1)};
     const expected = {
         total: "50.00", occurrences: "50.00",
         oneInChance: "1.000", pctChance: "100.0"
     };
-    assert.deepEqual(getStats(sciNumObj, ['1', '2', '3']), expected, "with str array");
-    assert.deepEqual(getStats(sciNumObj, [1, 2, 3]), expected, "with num array");
+    assert.deepEqual(getStatsFromSciNumObj(sciNumObj, ['1', '2', '3']), expected, "with str array");
+    assert.deepEqual(getStatsFromSciNumObj(sciNumObj, [1, 2, 3]), expected, "with num array");
 });
 
-QUnit.test("getStats arr is no keys in obj", function (assert) {
+QUnit.test("getStatsFromSciNumObj arr is no keys in obj", function (assert) {
     const sciNumObj = {1: new SciNum(1, 1), 2: new SciNum(2, 1), 3: new SciNum(2, 1), total: new SciNum(5, 1)};
     const expected = {
         total: "50.00", occurrences: "0.000",
         oneInChance: "+\u221E", pctChance: "0.000"
     };
-    assert.deepEqual(getStats(sciNumObj, [5, 6, 7]), expected, "with str array");
-    assert.deepEqual(getStats(sciNumObj, ['a', 'b']), expected, "with num array");
+    assert.deepEqual(getStatsFromSciNumObj(sciNumObj, [5, 6, 7]), expected, "with str array");
+    assert.deepEqual(getStatsFromSciNumObj(sciNumObj, ['a', 'b']), expected, "with num array");
 });
 
-QUnit.test("getStats arr is empty", function (assert) {
+QUnit.test("getStatsFromSciNumObj arr is empty", function (assert) {
     const sciNumObj = {1: new SciNum(1, 1), 2: new SciNum(2, 1), 3: new SciNum(2, 1), total: new SciNum(5, 1)};
     const expected = {
         total: "50.00", occurrences: "0.000",
         oneInChance: "+\u221E", pctChance: "0.000"
     };
-    assert.deepEqual(getStats(sciNumObj, []), expected);
+    assert.deepEqual(getStatsFromSciNumObj(sciNumObj, []), expected);
 });
 
-QUnit.test("getStats arr is some keys in obj.", function (assert) {
+QUnit.test("getStatsFromSciNumObj arr is some keys in obj.", function (assert) {
     const sciNumObj = {1: new SciNum(1, 1), 2: new SciNum(2, 1), 3: new SciNum(2, 1), total: new SciNum(5, 1)};
     const expected = {
         total: "50.00", occurrences: "30.00",
         oneInChance: "1.667", pctChance: "60.00"
     };
-    assert.deepEqual(getStats(sciNumObj, [0, 1, 2]), expected, "with str array");
+    assert.deepEqual(getStatsFromSciNumObj(sciNumObj, [0, 1, 2]), expected, "with str array");
 });
 
-QUnit.test("getStats large numbers large occurrences", function (assert) {
+QUnit.test("getStatsFromSciNumObj large numbers large occurrences", function (assert) {
     const sciNumObj = {
         1: new SciNum(1, 1000), 2: new SciNum(2, 1000), 3: new SciNum(2, 1000),
         total: new SciNum(5, 1000)
@@ -163,10 +163,10 @@ QUnit.test("getStats large numbers large occurrences", function (assert) {
         total: "5.000e+1000", occurrences: "3.000e+1000",
         oneInChance: "1.667", pctChance: "60.00"
     };
-    assert.deepEqual(getStats(sciNumObj, [0, 1, 2]), expected);
+    assert.deepEqual(getStatsFromSciNumObj(sciNumObj, [0, 1, 2]), expected);
 });
 
-QUnit.test("getStats large numbers small occurrences", function (assert) {
+QUnit.test("getStatsFromSciNumObj large numbers small occurrences", function (assert) {
     const sciNumObj = {
         1: new SciNum(1, 1), 2: new SciNum(2, 1), 3: new SciNum(2, 1000),
         total: new SciNum(2, 1000)
@@ -175,6 +175,20 @@ QUnit.test("getStats large numbers small occurrences", function (assert) {
         total: "2.000e+1000", occurrences: "30.00",
         oneInChance: "6.667e+998", pctChance: "1.500e-997"
     };
-    assert.deepEqual(getStats(sciNumObj, [0, 1, 2]), expected);
+    assert.deepEqual(getStatsFromSciNumObj(sciNumObj, [0, 1, 2]), expected);
+});
+
+QUnit.test("getStats properly combines two functions", function (assert) {
+    const forSciNumArray = [
+        {roll: 1, mantissa: 1, exponent: 1},
+        {roll: 2, mantissa: 2, exponent: 1},
+        {roll: 3, mantissa: 2, exponent: 1}
+    ];
+    const expected = {
+        total: "50.00", occurrences: "50.00",
+        oneInChance: "1.000", pctChance: "100.0"
+    };
+    assert.deepEqual(getStats(forSciNumArray, ['1', '2', '3']), expected, "with str array");
+    assert.deepEqual(getStats(forSciNumArray, [1, 2, 3]), expected, "with num array");
 });
 

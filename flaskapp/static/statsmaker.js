@@ -1,23 +1,25 @@
-// TODO getStats should be renamed to statsMaker and be sole exported function
+function getStats(rollMantissaExponentObjects, rollsQueryArray) {
+    const sciNumObj = createSciNumObj(rollMantissaExponentObjects);
+    return getStatsFromSciNumObj(sciNumObj, rollsQueryArray)
+}
 
-function createSciNumObj(rollsToMantissaPowerObj) {
+function createSciNumObj(rollMantissaExponentObjects) {
     const outObj = {};
     const forTotal = [];
-    for (const roll in rollsToMantissaPowerObj) {
-        if (rollsToMantissaPowerObj.hasOwnProperty(roll)) {
-            const manPowArr = rollsToMantissaPowerObj[roll];
-            const number = new SciNum(manPowArr[0], manPowArr[1]);
-            outObj[roll] = number;
-            forTotal.push(number);
-        }
-    }
+    rollMantissaExponentObjects.forEach((element) => {
+        const number = new SciNum(element.mantissa, element.exponent);
+        outObj[element.roll] = number;
+        forTotal.push(number);
+    });
+
     outObj["total"] = sumSciNum(forTotal);
+
     return outObj;
 }
 
-function getStats(sciNumObj, rollsArr) {
-    const sciNumArr = rollsArr.map(function (t) {
-        return getSciNumValue(sciNumObj, t);
+function getStatsFromSciNumObj(sciNumObj, rollsQueryArray) {
+    const sciNumArr = rollsQueryArray.map(function (roll) {
+        return getSciNumValue(sciNumObj, roll);
     });
     return createStatsObj(sciNumObj.total, sciNumArr);
 }

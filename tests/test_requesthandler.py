@@ -163,9 +163,14 @@ class TestRequestHandler(unittest.TestCase):
         expected = {
             'name': '<DiceTable containing [1D4]>',
             'diceStr': 'Die(4): 1',
-            'data': [(1, 2, 3, 4), (25.0, 25.0, 25.0, 25.0)],
+            'data': {'x': (1, 2, 3, 4), 'y': (25.0, 25.0, 25.0, 25.0)},
             'tableString': '1: 1\n2: 1\n3: 1\n4: 1\n',
-            'forSciNum': {1: ['1.00000', '0'], 2: ['1.00000', '0'], 3: ['1.00000', '0'], 4: ['1.00000', '0']},
+            'forSciNum': [
+                {'roll': 1, 'mantissa': '1.00000', 'exponent': '0'},
+                {'roll': 2, 'mantissa': '1.00000', 'exponent': '0'},
+                {'roll': 3, 'mantissa': '1.00000', 'exponent': '0'},
+                {'roll': 4, 'mantissa': '1.00000', 'exponent': '0'}
+            ],
             'range': (1, 4),
             'mean': 2.5,
             'stddev': 1.118
@@ -177,8 +182,11 @@ class TestRequestHandler(unittest.TestCase):
         table = DiceTable({1: 1, 2: 99 ** 1000}, DiceRecord.new())
         answer = make_dict(table)
         expected = {
-            'data': [(1, 2), (0.0, 100.0)],
-            'forSciNum': {1: ['1.00000', '0'], 2: ['4.31712', '1995']},
+            'data': {'x': (1, 2), 'y': (0.0, 100.0)},
+            'forSciNum': [
+                {'roll': 1, 'mantissa': '1.00000', 'exponent': '0'},
+                {'roll': 2, 'mantissa': '4.31712', 'exponent': '1995'}
+            ],
             'mean': 2.0,
             'range': (1, 2),
             'name': '<DiceTable containing []>',
@@ -195,12 +203,12 @@ class TestRequestHandler(unittest.TestCase):
         expected = {
             'name': '<DiceTable containing [3D2  W:100, 4D3]>',
             'diceStr': 'WeightedDie({1: 1, 2: 99}): 3\nDie(3): 4',
-            'data': [
-                (7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18),
-                (1.234567901234568e-06, 0.0003716049382716049, 0.03777901234567901, 1.3467864197530863,
-                 5.16049012345679, 12.566786419753084, 19.861979012345678, 23.34457160493827, 19.53086790123457,
-                 12.124566666666665, 4.8279, 1.1978999999999997)
-            ],
+            'data': {
+                'x': (7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18),
+                'y': (1.234567901234568e-06, 0.0003716049382716049, 0.03777901234567901, 1.3467864197530863,
+                      5.16049012345679, 12.566786419753084, 19.861979012345678, 23.34457160493827, 19.53086790123457,
+                      12.124566666666665, 4.8279, 1.1978999999999997)
+            },
             'tableString': (' 7: 1\n' +
                             ' 8: 301\n' +
                             ' 9: 30,601\n' +
@@ -213,23 +221,25 @@ class TestRequestHandler(unittest.TestCase):
                             '16: 9,820,899\n' +
                             '17: 3,910,599\n' +
                             '18: 970,299\n'),
-            'forSciNum': {
-                7: ['1.00000', '0'],
-                8: ['3.01000', '2'],
-                9: ['3.06010', '4'],
-                10: ['1.09090', '6'],
-                11: ['4.18000', '6'],
-                12: ['1.01791', '7'],
-                13: ['1.60882', '7'],
-                14: ['1.89091', '7'],
-                15: ['1.58200', '7'],
-                16: ['9.82090', '6'],
-                17: ['3.91060', '6'],
-                18: ['9.70299', '5']},
+            'forSciNum': [
+                {'roll': 7, 'mantissa': '1.00000', 'exponent': '0'},
+                {'roll': 8, 'mantissa': '3.01000', 'exponent': '2'},
+                {'roll': 9, 'mantissa': '3.06010', 'exponent': '4'},
+                {'roll': 10, 'mantissa': '1.09090', 'exponent': '6'},
+                {'roll': 11, 'mantissa': '4.18000', 'exponent': '6'},
+                {'roll': 12, 'mantissa': '1.01791', 'exponent': '7'},
+                {'roll': 13, 'mantissa': '1.60882', 'exponent': '7'},
+                {'roll': 14, 'mantissa': '1.89091', 'exponent': '7'},
+                {'roll': 15, 'mantissa': '1.58200', 'exponent': '7'},
+                {'roll': 16, 'mantissa': '9.82090', 'exponent': '6'},
+                {'roll': 17, 'mantissa': '3.91060', 'exponent': '6'},
+                {'roll': 18, 'mantissa': '9.70299', 'exponent': '5'}
+            ],
             'range': (7, 18),
             'mean': 13.97,
             'stddev': 1.642
         }
+
         self.assertEqual(answer, expected)
 
     def test_make_dict_mean_and_stddev_rounding(self):
@@ -244,8 +254,8 @@ class TestRequestHandler(unittest.TestCase):
     def test_get_response_empty_string_and_whitespace(self):
         empty_str_answer = self.handler.get_response('')
 
-        empty_response = {'data': [(0,), (100.0,)],
-                          'forSciNum': {0: ['1.00000', '0']},
+        empty_response = {'data': {'x': (0,), 'y': (100.0,)},
+                          'forSciNum': [{'roll': 0, 'mantissa': '1.00000', 'exponent': '0'}],
                           'mean': 0.0,
                           'range': (0, 0),
                           'name': '<DiceTable containing []>',
@@ -259,9 +269,14 @@ class TestRequestHandler(unittest.TestCase):
 
     def test_get_response(self):
         response = self.handler.get_response('Die(2)')
-        expected = {'diceStr': 'Die(2): 1', 'name': '<DiceTable containing [1D2]>',
-                    'data': [(1, 2), (50.0, 50.0)], 'tableString': '1: 1\n2: 1\n',
-                    'forSciNum': {1: ['1.00000', '0'], 2: ['1.00000', '0']},
+        expected = {'diceStr': 'Die(2): 1',
+                    'name': '<DiceTable containing [1D2]>',
+                    'data': {'x': (1, 2), 'y': (50.0, 50.0)},
+                    'tableString': '1: 1\n2: 1\n',
+                    'forSciNum': [
+                        {'roll': 1, 'mantissa': '1.00000', 'exponent': '0'},
+                        {'roll': 2, 'mantissa': '1.00000', 'exponent': '0'}
+                    ],
                     'range': (1, 2), 'mean': 1.5, 'stddev': 0.5}
         self.assertEqual(response, expected)
 
