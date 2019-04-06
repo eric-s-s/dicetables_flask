@@ -240,9 +240,7 @@ function plotStats(statsForm) {
     $('.tableRequest').each(function () {
         const tableObj = $('#' + this.id).data('tableObj');
         if (tableObj !== null) {
-
-            const forStats = createSciNumObj(tableObj.forSciNum); // TODO two lines to one clear function!
-            const statsInfo = getStats(forStats, queryArr);
+            const statsInfo = getStats(tableObj.forSciNum, queryArr);
             statsInfo['header'] = getDiceListString(tableObj.name);
 
             const traceDatum = statsGraphVals(queryArr, tableObj);

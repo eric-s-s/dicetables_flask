@@ -1,5 +1,7 @@
-// TODO getStats should be renamed to statsMaker and be sole exported function
-
+function getStats(rollMantissaExponentObjects, rollsQueryArray) {
+    const sciNumObj = createSciNumObj(rollMantissaExponentObjects);
+    return getStatsFromSciNumObj(sciNumObj, rollsQueryArray)
+}
 
 function createSciNumObj(rollMantissaExponentObjects) {
     const outObj = {};
@@ -15,7 +17,7 @@ function createSciNumObj(rollMantissaExponentObjects) {
     return outObj;
 }
 
-function getStats(sciNumObj, rollsQueryArray) {
+function getStatsFromSciNumObj(sciNumObj, rollsQueryArray) {
     const sciNumArr = rollsQueryArray.map(function (roll) {
         return getSciNumValue(sciNumObj, roll);
     });
