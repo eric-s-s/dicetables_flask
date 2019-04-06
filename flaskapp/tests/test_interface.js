@@ -34,14 +34,6 @@ QUnit.test("onPageLoad all tableObj 'data('tableObj') = null", function (assert)
     });
 });
 
-// QUnit.test("onPageLoad first tableObj is graphed", function (assert) {
-//     $.holdReady(true);
-//     onPageLoad();
-//     var graphData = document.getElementById('plotter').data;
-//     assert.deepEqual(graphData[0].x, fakeAnswer1.data.x);
-//     assert.deepEqual(graphData[0].y, fakeAnswer1.data.y);
-//     assert.equal(graphData.length, 1);
-// });
 
 QUnit.test("setUpHiddenForms hides all forms and stores id's in order as data", function (assert) {
     $.holdReady(true);
@@ -177,29 +169,29 @@ QUnit.test('plotCurrentTables removes data that is not a table', function (asser
 QUnit.test('plotCurrentTables tables have data', function (assert) {
     initTest();
 
-    $("#table-0").data('tableObj', fakeAnswer3);
-    $('#table-1').data('tableObj', fakeAnswer1);
+    $("#table-0").data('tableObj', testResponse0);
+    $('#table-1').data('tableObj', testResponse1);
     plotCurrentTables();
     const graphData = document.getElementById('plotter').data;
     assert.equal(graphData.length, 2);
-    assert.equal(graphData[0].x, fakeAnswer3.data.x);
-    assert.equal(graphData[0].y, fakeAnswer3.data.y);
-    assert.equal(graphData[1].x, fakeAnswer1.data.x);
-    assert.equal(graphData[1].y, fakeAnswer1.data.y);
+    assert.equal(graphData[0].x, testResponse0.data.x);
+    assert.equal(graphData[0].y, testResponse0.data.y);
+    assert.equal(graphData[1].x, testResponse1.data.x);
+    assert.equal(graphData[1].y, testResponse1.data.y);
 });
 
 QUnit.test('plotCurrentTables tables gets new min and max', function (assert) {
     initTest();
 
-    $("#table-0").data('tableObj', fakeAnswer3);
-    $('#table-1').data('tableObj', fakeAnswer1);
+    $("#table-0").data('tableObj', testResponse0);
+    $('#table-1').data('tableObj', testResponse2);
     plotCurrentTables();
-    assert.deepEqual(fakeAnswer3.range, [1, 16]);
-    assert.deepEqual(fakeAnswer1.range, [3, 12]);
+    assert.deepEqual(testResponse0.range, [1, 3]);
+    assert.deepEqual(testResponse2.range, [2, 10]);
 
     $('.statsInput').each(function () {
         assert.equal(this.min, 1);
-        assert.equal(this.max, 16);
+        assert.equal(this.max, 10);
     });
 });
 
@@ -394,15 +386,15 @@ QUnit.test('resetStatsTable', function (assert) {
 
     const table0 = $("#table-0");
 
-    table0.data('tableObj', fakeAnswer3); // [-2, 3d6] "range": [1, 16], "mean": 8.5, "stddev": 2.958
-    $('#table-1').data('tableObj', fakeAnswer1); // [3D4] 'stddev': 1.9365, 'mean': 7.5, 'range': [3, 12]
+    table0.data('tableObj', testResponse0); // [1d3] "range": [1, 16], "mean": 8.5, "stddev": 2.958
+    $('#table-1').data('tableObj', testResponse2); // [3D4] 'stddev': 1.9365, 'mean': 7.5, 'range': [3, 12]
     $('#rowFor-stats-0').show();
 
     resetStatsTable();
 
     assert.ok($('#statsTable').find('tr:visible').is('.keeper'), 'hides correct rows.');
 
-    const expectedHeaders = ['[-2, 3D6]', '[3D4]'];
+    const expectedHeaders = ['[1D3]', '[1D4, 1D6]'];
     const expectedColors = [['#1f77b4', 'rgb(31, 119, 180)'], ['#ff7f0e', 'rgb(255, 127, 14)']];
     tableName.find('td').each(function (index) {
         assert.equal(this.innerHTML.indexOf(expectedHeaders[index]), 0, 'tableName text');
@@ -410,17 +402,17 @@ QUnit.test('resetStatsTable', function (assert) {
             'tableName color');
     });
 
-    const expectedRange = ['1 to 16', '3 to 12'];
+    const expectedRange = ['1 to 3', '2 to 10'];
     tableRange.find('td').each(function (index) {
         assert.equal(this.innerHTML, expectedRange[index], 'tableRange');
     });
 
-    const expectedMean = ['8.5', '7.5'];
+    const expectedMean = ['2', '6'];
     tableMean.find('td').each(function (index) {
         assert.equal(this.innerHTML, expectedMean[index], 'tableMean');
     });
 
-    const expectedStdDev = ['2.958', '1.9365'];
+    const expectedStdDev = ['0.816', '2.041'];
     tableStdDev.find('td').each(function (index) {
         assert.equal(this.innerHTML, expectedStdDev[index], 'tablestddev');
     });
@@ -428,24 +420,24 @@ QUnit.test('resetStatsTable', function (assert) {
     table0.data('tableObj', null);
     resetStatsTable();
     tableName.find('td').each(function (index) {
-        assert.equal(this.innerHTML.indexOf('[3D4]'), 0, 'Removed first tableObj - tableName text');
+        assert.equal(this.innerHTML.indexOf('[1D4, 1D6]'), 0, 'Removed first tableObj - tableName text');
         assert.ok((this.style.color === '#1f77b4' || this.style.color === 'rgb(31, 119, 180)'),
             'Removed first tableObj -tableName color');
         assert.ok(index < 1, 'only one el tableName');
     });
 
     tableRange.find('td').each(function (index) {
-        assert.equal(this.innerHTML, '3 to 12', 'Removed first tableObj - tableRange');
+        assert.equal(this.innerHTML, '2 to 10', 'Removed first tableObj - tableRange');
         assert.ok(index < 1, 'only one el tableRange');
     });
 
     tableMean.find('td').each(function (index) {
-        assert.equal(this.innerHTML, '7.5', 'Removed first tableObj - tableMean');
+        assert.equal(this.innerHTML, '6', 'Removed first tableObj - tableMean');
         assert.ok(index < 1, 'only one el tableMean');
     });
 
     tableStdDev.find('td').each(function (index) {
-        assert.equal(this.innerHTML, '1.9365', 'Removed first tableObj - tablestddev');
+        assert.equal(this.innerHTML, '2.041', 'Removed first tableObj - tablestddev');
         assert.ok(index < 1, 'only one el tableStdDev');
     });
 });
@@ -460,7 +452,7 @@ QUnit.test('getTable assigns tableObj to table according to value', function (as
     const done = assert.async();
     getTable(table0[0]);
     setTimeout(function () {
-        assert.deepEqual(table0.data('tableObj'), fakeAnswer1, 'works?');
+        assert.deepEqual(table0.data('tableObj'), testResponse0, 'works?');
         done();
     }, 500);
 
@@ -468,7 +460,7 @@ QUnit.test('getTable assigns tableObj to table according to value', function (as
     table0[0].tableQuery.value = 2;
     getTable((table0[0]));
     setTimeout(function () {
-        assert.deepEqual(table0.data('tableObj'), fakeAnswer3, 'works?');
+        assert.deepEqual(table0.data('tableObj'), testResponse2, 'works?');
         done2();
     }, 500);
 });
@@ -489,10 +481,10 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
 
     getTable(document.getElementById('table-0'));
     const done1 = assert.async();
-    const expectedNames = ['[3D4]'];
+    const expectedNames = ['[1D3]', '[1D5]'];
     setTimeout(function () {
-        assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data.x, 'one graph x vals');
-        assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data.y, 'one graph y vals');
+        assert.deepEqual(graphDiv.data[0].x, testResponse0.data.x, 'one graph x vals');
+        assert.deepEqual(graphDiv.data[0].y, testResponse0.data.y, 'one graph y vals');
         assert.equal(graphDiv.data.length, 1, 'one graph data only one length');
 
         tableName.find('td').each(function (index) {
@@ -505,11 +497,11 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
     getTable(document.getElementById('table-1'));
     const done2 = assert.async();
     setTimeout(function () {
-        assert.deepEqual(graphDiv.data[0].x, fakeAnswer1.data.x, 'first graph x vals');
-        assert.deepEqual(graphDiv.data[0].y, fakeAnswer1.data.y, 'first graph y vals');
+        assert.deepEqual(graphDiv.data[0].x, testResponse0.data.x, 'first graph x vals');
+        assert.deepEqual(graphDiv.data[0].y, testResponse0.data.y, 'first graph y vals');
 
-        assert.deepEqual(graphDiv.data[1].x, fakeAnswer2.data.x, 'second graph x vals');
-        assert.deepEqual(graphDiv.data[1].y, fakeAnswer2.data.y, 'second graph y vals');
+        assert.deepEqual(graphDiv.data[1].x, testResponse1.data.x, 'second graph x vals');
+        assert.deepEqual(graphDiv.data[1].y, testResponse1.data.y, 'second graph y vals');
 
         assert.equal(graphDiv.data.length, 2, 'data length 2');
         expectedNames.push('[3D6]');
@@ -544,8 +536,8 @@ QUnit.test('hideTableForm test all actions', function (assert) {
     const table0 = $('#table-0');
     const table1 = $('#table-1');
 
-    table0.data('tableObj', fakeAnswer1);
-    table1.data('tableObj', fakeAnswer2);
+    table0.data('tableObj', testResponse0);
+    table1.data('tableObj', testResponse1);
     plotCurrentTables();
     resetStatsTable();
 
@@ -563,7 +555,7 @@ QUnit.test('hideTableForm test all actions', function (assert) {
         'table put back into hiddenforms (testInit() makes "hiddenForms" an empty list)');
     tableName.find('td').each(function (index) {
         assert.ok(index < 1, 'only one name in tableName');
-        assert.equal(this.innerHTML.indexOf('[3D6]'), 0, 'only name is from table-1');
+        assert.equal(this.innerHTML.indexOf('[1D5]'), 0, 'only name is from table-1');
     });
 
 });
@@ -790,162 +782,140 @@ QUnit.test('plotStats', function (assert) {
 
     const table0 = $('#table-0');
     const table2 = $("#table-2");
-    table0.data('tableObj', fakeAnswer1);
-    table2.data('tableObj', fakeAnswer3);
+    table0.data('tableObj', testResponse0);
+    table2.data('tableObj', testResponse2);
 
     plotCurrentTables();
     assert.equal(graphDiv.data.length, 2, 'Setup has two traces in graph.');
 
     const stats0 = document.getElementById('stats-0');
     const stats1 = document.getElementById('stats-1');
-    stats0.left.value = 5;
-    stats0.right.value = 10;
+    stats0.left.value = 1;
+    stats0.right.value = 3;
 
-    stats1.left.value = 12;
-    stats1.right.value = 12;
+    stats1.left.value = 5;
+    stats1.right.value = 5;
 
     const tableEntry0 = plotStats(stats0);
     const expectedTableEntry = [
         {
-            "header": "[3D4]",
-            "occurrences": "56.00",
-            "oneInChance": "1.143",
-            "pctChance": "87.50",
-            "total": "64.00"
+            "header": "[1D3]",
+            "occurrences": "3.000",
+            "oneInChance": "1.000",
+            "pctChance": "100.0",
+            "total": "3.000"
         },
         {
-            "header": "[-2, 3D6]",
-            "occurrences": "140.0",
-            "oneInChance": "1.543",
-            "pctChance": "64.81",
-            "total": "216.0"
+            "header": "[1D4, 1D6]",
+            "occurrences": "3.000",
+            "oneInChance": "8.000",
+            "pctChance": "12.50",
+            "total": "24.00"
         }
     ];
 
     assert.equal(graphDiv.data.length, 4, 'graphDiv now has four traces');
     assert.deepEqual(tableEntry0, expectedTableEntry, 'tableEntry output is correct');
-    let expected3D4GraphData =
+    let expected1D3GraphData =
         {
             "fill": "tozeroy",
             "fillcolor": "rgba(31,109,190,0.5)",
             "hoverinfo": "skip",
-            "legendgroup": "Die(4): 3",
+            "legendgroup": "Die(3): 1",
             "mode": "none",
-            "name": "[3D4]: [5to10]: 87.50%",
+            "name": "[1D3]: [1to3]: 100.0%",
             "statsGroup": "stats-0",
             "type": "scatter",
             "x": [
-                4.52,
-                5,
-                6,
-                7,
-                8,
-                9,
-                10,
-                10.48
+                1,
+                2,
+                3
             ],
             "y": [
-                7.125,
-                9.375,
-                15.624999999999998,
-                18.75,
-                18.75,
-                15.624999999999998,
-                9.375,
-                7.125
+                33.333333333333336,
+                33.333333333333336,
+                33.333333333333336
             ]
         };
-    for (key in expected3D4GraphData) {
-        assert.deepEqual(graphDiv.data[2][key], expected3D4GraphData[key], 'all parts but uid are equal. 3D4')
+    for (key in expected1D3GraphData) {
+        assert.deepEqual(graphDiv.data[2][key], expected1D3GraphData[key], 'all parts but uid are equal. 1D3')
     }
 
-    let expected3D6GraphData =
+    let expected1D41D6GraphData =
         {
             "fill": "tozeroy",
             "fillcolor": "rgba(255,117,24,0.5)",
             "hoverinfo": "skip",
-            "legendgroup": "Modifier(-2): 1\nDie(6): 3",
+            "legendgroup": "Die(4): 1\nDie(6): 1",
             "mode": "none",
-            "name": "[-2, 3D6]: [5to10]: 64.81%",
+            "name": "[1D4, 1D6]: [1to3]: 12.50%",
             "statsGroup": "stats-0",
             "type": "scatter",
             "x": [
-                4.52,
-                5,
-                6,
-                7,
-                8,
-                9,
-                10,
-                10.48
+                2,
+                3,
+                3.48
             ],
             "y": [
-                5.833333333333333,
-                6.944444444444444,
-                9.722222222222221,
-                11.574074074074073,
-                12.5,
-                12.5,
-                11.574074074074073,
-                10.685185185185183
+                4.166666666666667,
+                8.333333333333334,
+                10.333333333333334
             ]
         };
-    for (key in expected3D6GraphData) {
-        assert.deepEqual(graphDiv.data[3][key], expected3D6GraphData[key], 'all parts but uid are equal. [-2, 3D6]')
+    for (key in expected1D41D6GraphData) {
+        assert.deepEqual(graphDiv.data[3][key], expected1D41D6GraphData[key], 'all parts but uid are equal. [1D4, 1D6')
     }
 
-    stats0.left.value = 6;
-    stats0.right.value = 6;
+    stats0.left.value = 2;
+    stats0.right.value = 2;
 
     plotStats(stats0);
 
     assert.equal(graphDiv.data.length, 4, 'length did not change when regraphing same statsForm.');
-    expected3D4GraphData = {
+    expected1D3GraphData = {
         "fill": "tozeroy",
         "fillcolor": "rgba(31,109,190,0.5)",
         "hoverinfo": "skip",
-        "legendgroup": "Die(4): 3",
+        "legendgroup": "Die(3): 1",
         "mode": "none",
-        "name": "[3D4]: [6]: 15.63%",
+        "name": "[1D3]: [2]: 33.33%",
         "statsGroup": "stats-0",
         "type": "scatter",
         "x": [
-            5.52,
-            6,
-            6.48
+            1.52,
+            2,
+            2.48
         ],
         "y": [
-            12.625,
-            15.624999999999998,
-            17.125
+            33.333333333333336,
+            33.333333333333336,
+            33.333333333333336
         ]
     };
-    for (key in expected3D4GraphData) {
-        assert.deepEqual(graphDiv.data[2][key], expected3D4GraphData[key], 'new 3D4 graph is equal')
+    for (key in expected1D3GraphData) {
+        assert.deepEqual(graphDiv.data[2][key], expected1D3GraphData[key], 'new 1D3 graph is equal')
     }
 
-    expected3D6GraphData = {
+    expected1D41D6GraphData = {
         "fill": "tozeroy",
         "fillcolor": "rgba(255,117,24,0.5)",
         "hoverinfo": "skip",
-        "legendgroup": "Modifier(-2): 1\nDie(6): 3",
+        "legendgroup": "Die(4): 1\nDie(6): 1",
         "mode": "none",
-        "name": "[-2, 3D6]: [6]: 9.722%",
+        "name": "[1D4, 1D6]: [2]: 4.167%",
         "statsGroup": "stats-0",
         "type": "scatter",
         "x": [
-            5.52,
-            6,
-            6.48
+            2,
+            2.48
         ],
         "y": [
-            8.38888888888889,
-            9.722222222222221,
-            10.61111111111111
+            4.166666666666667,
+            6.166666666666667
         ]
     };
-    for (key in expected3D6GraphData) {
-        assert.deepEqual(graphDiv.data[3][key], expected3D6GraphData[key], 'new 3D6 graph is equal')
+    for (key in expected1D41D6GraphData) {
+        assert.deepEqual(graphDiv.data[3][key], expected1D41D6GraphData[key], 'new [1D4,1D6 graph is equal')
     }
 
     plotStats(stats1);
