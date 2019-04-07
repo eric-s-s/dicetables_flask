@@ -1,7 +1,8 @@
 import string
 
 from dicetables import (Parser, DiceTable, DiceRecord, EventsCalculations,
-                        ParseError, LimitsError, InvalidEventsError, DiceRecordError)
+                        ParseError, LimitsError, InvalidEventsError, DiceRecordError, Roller)
+from dicetables.tools.alias_table import Alias
 
 
 class DiceTablesRequestHandler(object):
@@ -90,6 +91,8 @@ def make_dict(dice_table: DiceTable):
     out['range'] = calc.info.events_range()
     out['mean'] = round(calc.mean(), 3)
     out['stddev'] = calc.stddev(3)
+
+    out['roller'] = _get_roller_data(dice_table)
     return out
 
 
@@ -97,3 +100,20 @@ def _get_json(full_table_str_line):
     roll, number = full_table_str_line.split(': ')
     mantissa, exponent = number.split('e+')
     return {'roll': int(roll), 'mantissa': mantissa, 'exponent': exponent}
+
+
+def _get_roller_data(dice_table: DiceTable):
+    roller = Roller(dice_table)
+    return {
+        'height': str(roller.alias_table.height),
+        'length': str(roller.alias_table.length),
+        'aliases': [_get_alias_dict(alias) for alias in roller.alias_table.to_list()]
+    }
+
+
+def _get_alias_dict(alias: Alias):
+    return {
+        'primary': str(alias.primary),
+        'alternate': str(alias.alternate),
+        'primaryHeight': str(alias.primary_height)
+    }
