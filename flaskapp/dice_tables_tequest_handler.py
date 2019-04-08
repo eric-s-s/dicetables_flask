@@ -73,6 +73,7 @@ class DiceTablesRequestHandler(object):
             return {'error': e.args[0], 'type': e.__class__.__name__}
 
 
+
 def make_dict(dice_table: DiceTable):
     calc = EventsCalculations(dice_table)
     out = dict()
@@ -98,7 +99,10 @@ def make_dict(dice_table: DiceTable):
 
 def _get_json(full_table_str_line):
     roll, number = full_table_str_line.split(': ')
-    mantissa, exponent = number.split('e+')
+    if number == '0':
+        mantissa = exponent = '0'
+    else:
+        mantissa, exponent = number.split('e+')
     return {'roll': int(roll), 'mantissa': mantissa, 'exponent': exponent}
 
 

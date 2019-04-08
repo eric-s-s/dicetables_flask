@@ -293,6 +293,32 @@ class TestRequestHandler(unittest.TestCase):
         self.assertEqual(table.calc.stddev(3), 0.471)
         self.assertEqual(answer['stddev'], 0.471)
 
+    def test_make_dict_can_handle_gaps(self):
+        table = DiceTable.new().add_die(WeightedDie({1: 1, 3: 1}))
+        answer = make_dict(table)
+        expected = {
+            'name': '<DiceTable containing [1D3  W:2]>',
+            'diceStr': 'WeightedDie({1: 1, 2: 0, 3: 1}): 1',
+            'data': {'x': (1, 2, 3), 'y': (50.0, 0.0, 50.0)},
+            'tableString': '1: 1\n2: 0\n3: 1\n',
+            'forSciNum': [
+                {'roll': 1, 'mantissa': '1.00000', 'exponent': '0'},
+                {'roll': 2, 'mantissa': '0', 'exponent': '0'},
+                {'roll': 3, 'mantissa': '1.00000', 'exponent': '0'}
+            ],
+            'range': (1, 3),
+            'mean': 2,
+            'stddev': 1.0,
+            'roller': {
+                'height': "2",
+                'aliases': [
+                    {'primary': "3", 'alternate': "3", 'primaryHeight': "2"},
+                    {'primary': "1", 'alternate': "1", 'primaryHeight': "2"}
+                ]
+            }
+        }
+        self.assertEqual(answer, expected)
+
     def test_get_response_empty_string_and_whitespace(self):
         empty_str_answer = self.handler.get_response('')
 

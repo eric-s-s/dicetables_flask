@@ -116,7 +116,6 @@ QUnit.test("Roller.roll testing with non-random randomizer", function (assert) {
     ];
 
     const roller = new Roller(height, aliases, myRandomizer(true));
-    roller.useMax = false;
     for (let i = 0; i < 10; i++) {
         const roll = roller.roll();
         assert.strictEqual(roll, '1', "roll is always 1, iteration: " + i);
