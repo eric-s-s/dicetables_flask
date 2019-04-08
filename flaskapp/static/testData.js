@@ -53,8 +53,7 @@ const testResponse0 = {
                 "primaryHeight": "3"
             }
         ],
-        "height": "3",
-        "length": "3"
+        "height": "3"
     },
     "stddev": 0.816,
     "tableString": "1: 1\n2: 1\n3: 1\n"
@@ -139,8 +138,7 @@ const testResponse1 = {
                 "primaryHeight": "5"
             }
         ],
-        "height": "5",
-        "length": "5"
+        "height": "5"
     },
     "stddev": 1.414,
     "tableString": "1: 1\n2: 1\n3: 1\n4: 1\n5: 1\n"
@@ -273,8 +271,7 @@ const testResponse2 = {
                 "primaryHeight": "24"
             }
         ],
-        "height": "24",
-        "length": "9"
+        "height": "24"
     },
     "stddev": 2.041,
     "tableString": " 2: 1\n 3: 2\n 4: 3\n 5: 4\n 6: 4\n 7: 4\n 8: 3\n 9: 2\n10: 1\n"
@@ -431,8 +428,7 @@ const testResponse3 = {
                 "primaryHeight": "36"
             }
         ],
-        "height": "36",
-        "length": "11"
+        "height": "36"
     },
     "stddev": 2.415,
     "tableString": " 2: 1\n 3: 2\n 4: 3\n 5: 4\n 6: 5\n 7: 6\n 8: 5\n 9: 4\n10: 3\n11: 2\n12: 1\n"

@@ -106,7 +106,6 @@ def _get_roller_data(dice_table: DiceTable):
     roller = Roller(dice_table)
     return {
         'height': str(roller.alias_table.height),
-        'length': str(roller.alias_table.length),
         'aliases': [_get_alias_dict(alias) for alias in roller.alias_table.to_list()]
     }
 

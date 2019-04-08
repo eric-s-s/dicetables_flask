@@ -175,7 +175,6 @@ class TestRequestHandler(unittest.TestCase):
             'mean': 2.5,
             'stddev': 1.118,
             'roller': {
-                'length': "4",
                 'height': "4",
                 'aliases': [
                     {'primary': "4", 'alternate': "4", 'primaryHeight': "4"},
@@ -208,7 +207,6 @@ class TestRequestHandler(unittest.TestCase):
                            '5895145922991572345585185250800940116508114750525076655926616148114182143549026229853337'
                            '9940869208919850517403157109776051593152797345404989883632793071982398710942373198113120'
                            '40403122389178667907944352945294284623021821750094845717881664249886010'),
-                'length': '2',
                 'aliases': [
                     {'primary': "1", "alternate": "2", "primaryHeight": "2"},
                     {"primary": "2", "alternate": "2",
@@ -281,7 +279,6 @@ class TestRequestHandler(unittest.TestCase):
                     {'alternate': '12', 'primary': '12', 'primaryHeight': '81000000'}
                 ],
                 'height': '81000000',
-                'length': '12'
             },
         }
 
@@ -315,7 +312,6 @@ class TestRequestHandler(unittest.TestCase):
                      'primaryHeight': '1'}
                 ],
                 'height': '1',
-                'length': '1'
             }
         }
         self.assertEqual(empty_str_answer, empty_response)
@@ -340,7 +336,6 @@ class TestRequestHandler(unittest.TestCase):
                     {'alternate': '2', 'primary': '2', 'primaryHeight': '2'},
                     {'alternate': '1', 'primary': '1', 'primaryHeight': '2'}],
                 'height': '2',
-                'length': '2'
             },
         }
         self.assertEqual(response, expected)
