@@ -11,6 +11,9 @@ function onPageLoad() {
         getTable(this);
     });
     allTableForms.data('tableObj', null);
+    allTableForms.each(function () {
+        clearRollResults($(this));
+    });
 
     allStatsForms.submit(function (event) {
         event.preventDefault();
@@ -79,6 +82,8 @@ function getTable(tableForm) {
             $(tableForm).data('tableObj', data);
             plotCurrentTables();
             resetStatsTable();
+            // clearRollResults($(tableForm)); // todo: test
+            // assignRollers(); // todo: test!
         }).fail(function (jqXHR) {
         console.log(jqXHR);
         /** @namespace jqXHR.responseJSON */
@@ -100,6 +105,8 @@ function hideTableForm(idStr) {
     hiddenForms.sort();
     plotCurrentTables();
     resetStatsTable();
+    // clearRollResults(theForm); // todo: test
+    // assignRollers();  // todo: test!
 }
 
 function hideStatsForm(idStr) {
@@ -224,6 +231,35 @@ function getTableObjStats(tableObj, index) {
     out['tableMean'] = "<td style='color:" + color + "'>" + tableObj.mean + '</td>';
     out['tableStdDev'] = "<td style='color:" + color + "'>" + tableObj.stddev + '</td>';
     return out;
+}
+
+// assignRollers
+function assignRollers() {
+    $('.tableRequest').each(function () {
+            assignRoller($(this));
+        }
+    )
+}
+
+function assignRoller(tableRequestJQuery) {
+    const tableObj = tableRequestJQuery.data("tableObj");
+    const rollerButton = tableRequestJQuery.find('.roller').one();
+    rollerButton.off("click");
+
+    if (tableObj !== null) {
+        const rollerObject = new Roller(tableObj.roller.height, tableObj.roller.aliases);
+        const rollResults = tableRequestJQuery.data("rollResults");
+        rollerButton.click(function () {
+                rollResults.push(rollerObject.roll());
+                alert(rollResults);
+            }
+        );
+    }
+    console.log("roller button after ", rollerButton.onclick);
+}
+
+function clearRollResults(tableRequestJQuery) {
+    tableRequestJQuery.data('rollResults', []);
 }
 
 // plotStats and helpers
