@@ -433,3 +433,6 @@ const testResponse3 = {
     "stddev": 2.415,
     "tableString": " 2: 1\n 3: 2\n 4: 3\n 5: 4\n 6: 5\n 7: 6\n 8: 5\n 9: 4\n10: 3\n11: 2\n12: 1\n"
 };
+
+
+const testResponseList = [testResponse0, testResponse1, testResponse2, testResponse3];

@@ -74,25 +74,31 @@ function setUpExample(exampleStr) {
     return toAlter;
 }
 
+function processNewData(tableRequestJQuery, data) {
+    console.log(data);
+    tableRequestJQuery.data('tableObj', data);
+    plotCurrentTables();
+    resetStatsTable();
+    clearRollResults(tableRequestJQuery);
+    assignRollers();
+}
+
 function getTable(tableForm) {
     const requestStr = tableForm.tableQuery.value;
     $.getJSON($SCRIPT_ROOT + '_get_table', {'requestStr': requestStr},
         function (data) {
-            console.log(data);
-            $(tableForm).data('tableObj', data);
-            plotCurrentTables();
-            resetStatsTable();
-            // clearRollResults($(tableForm)); // todo: test
-            // assignRollers(); // todo: test!
-        }).fail(function (jqXHR) {
-        console.log(jqXHR);
-        /** @namespace jqXHR.responseJSON */
-        const errorJson = jqXHR.responseJSON;
-        alert(
-            jqXHR.status + ': ' + jqXHR.statusText + '\n' +
-            'error type: ' + errorJson.type + '\ndetails: ' + errorJson.error
-        );
-    });
+            processNewData($(tableForm), data);
+        }
+    ).fail(function (jqXHR) {
+            console.log(jqXHR);
+            /** @namespace jqXHR.responseJSON */
+            const errorJson = jqXHR.responseJSON;
+            alert(
+                jqXHR.status + ': ' + jqXHR.statusText + '\n' +
+                'error type: ' + errorJson.type + '\ndetails: ' + errorJson.error
+            );
+        }
+    );
 }
 
 function hideTableForm(idStr) {
@@ -105,8 +111,8 @@ function hideTableForm(idStr) {
     hiddenForms.sort();
     plotCurrentTables();
     resetStatsTable();
-    // clearRollResults(theForm); // todo: test
-    // assignRollers();  // todo: test!
+    clearRollResults(theForm);
+    assignRollers();  
 }
 
 function hideStatsForm(idStr) {
@@ -243,7 +249,7 @@ function assignRollers() {
 
 function assignRoller(tableRequestJQuery) {
     const tableObj = tableRequestJQuery.data("tableObj");
-    const rollerButton = tableRequestJQuery.find('.roller').one();
+    const rollerButton = tableRequestJQuery.find('.roller');
     rollerButton.off("click");
 
     if (tableObj !== null) {

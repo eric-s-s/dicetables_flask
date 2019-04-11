@@ -148,7 +148,9 @@ function initTest() {
     $.holdReady(true);
     const allTableRequests = $('.tableRequest');
     allTableRequests.data('tableObj', null);
-    allTableRequests.data('rollResults', []);
+    allTableRequests.each(function () {
+        $(this).data('rollResults', []);
+    });
     $('#tableRequestArea').data('hiddenForms', []);
     $('#statsRequestArea').data('hiddenForms', []);
     Plotly.newPlot(document.getElementById('plotter'), [{x: [0], y: [0]}]);
@@ -562,8 +564,7 @@ QUnit.test("assignRollers", function (assert) {
 
     table0.data('tableObj', tableObj2);
     table1.data('tableObj', tableObj);
-    assignRoller(table0);
-    assignRoller(table1);
+    assignRollers();
 
     roller0.click();
     roller1.click();
@@ -579,30 +580,50 @@ QUnit.test("clearRollResults", function (assert) {
     assert.deepEqual(table0.data('rollResults'), [], "results are empty")
 });
 
-QUnit.test('getTable assigns tableObj to table according to value', function (assert) {
+QUnit.test('getTable retrieves data and calls processNewData on $(table) and data', function (assert) {
     initTest();
 
-    const table0 = $("#table-0");
-    table0[0].tableQuery.value = 0;
+    const table0 = $('#table-0');
 
+    const mockJaxIndex = 0;
+    table0[0].tableQuery.value = mockJaxIndex;
+    const expectedTestData = testResponseList[mockJaxIndex];
 
-    const done = assert.async();
-    getTable(table0[0]);
+    const originalFunction = processNewData;
+
+    let callCounter = 0;
+    processNewData = function(tableRequestJQuery, data) {
+        tableRequestJQuery.data('calledWith', data);
+        callCounter++;
+    };
+
+    getTable(document.getElementById('table-0'));
+    const done1 = assert.async();
     setTimeout(function () {
-        assert.deepEqual(table0.data('tableObj'), testResponse0, 'works?');
-        done();
-    }, 500);
+        assert.deepEqual(table0.data('calledWith'), expectedTestData,
+            "table called with testResponse0 and expected data");
+        assert.strictEqual(callCounter, 1, 'method called once');
 
-    const done2 = assert.async();
-    table0[0].tableQuery.value = 2;
-    getTable((table0[0]));
-    setTimeout(function () {
-        assert.deepEqual(table0.data('tableObj'), testResponse2, 'works?');
-        done2();
+        processNewData = originalFunction;
+        done1();
     }, 500);
 });
 
-QUnit.test('getTable plots current tables and resets StatsTable', function (assert) {
+QUnit.test('processNewData assigns tableObj to TableRequest', function (assert) {
+    initTest();
+
+    const table0 = $("#table-0");
+
+    processNewData(table0, testResponse0);
+
+    assert.deepEqual(table0.data('tableObj'), testResponse0, 'works?');
+
+    processNewData(table0, testResponse2);
+
+    assert.deepEqual(table0.data('tableObj'), testResponse2, 'works?');
+});
+
+QUnit.test('processNewData plots current tables and resets StatsTable', function (assert) {
     initTest();
 
     const table0 = $('#table-0');
@@ -616,79 +637,52 @@ QUnit.test('getTable plots current tables and resets StatsTable', function (asse
 
     assert.equal(tableName.find('td').length, 0, 'statsTable names is empty');
 
-    getTable(document.getElementById('table-0'));
-    const done1 = assert.async();
+    processNewData(table0, testResponse0);
     const expectedNames = ['[1D3]', '[1D5]'];
-    setTimeout(function () {
-        assert.deepEqual(graphDiv.data[0].x, testResponse0.data.x, 'one graph x vals');
-        assert.deepEqual(graphDiv.data[0].y, testResponse0.data.y, 'one graph y vals');
-        assert.equal(graphDiv.data.length, 1, 'one graph data only one length');
 
-        tableName.find('td').each(function (index) {
-            assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct');
-        });
-        done1();
-    }, 500);
+    assert.deepEqual(graphDiv.data[0].x, testResponse0.data.x, 'one graph x vals');
+    assert.deepEqual(graphDiv.data[0].y, testResponse0.data.y, 'one graph y vals');
+    assert.equal(graphDiv.data.length, 1, 'one graph data only one length');
+
+    tableName.find('td').each(function (index) {
+        assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct');
+    });
 
 
-    getTable(document.getElementById('table-1'));
-    const done2 = assert.async();
-    setTimeout(function () {
-        assert.deepEqual(graphDiv.data[0].x, testResponse0.data.x, 'first graph x vals');
-        assert.deepEqual(graphDiv.data[0].y, testResponse0.data.y, 'first graph y vals');
+    processNewData(table1, testResponse1);
+    assert.deepEqual(graphDiv.data[0].x, testResponse0.data.x, 'first graph x vals');
+    assert.deepEqual(graphDiv.data[0].y, testResponse0.data.y, 'first graph y vals');
 
-        assert.deepEqual(graphDiv.data[1].x, testResponse1.data.x, 'second graph x vals');
-        assert.deepEqual(graphDiv.data[1].y, testResponse1.data.y, 'second graph y vals');
+    assert.deepEqual(graphDiv.data[1].x, testResponse1.data.x, 'second graph x vals');
+    assert.deepEqual(graphDiv.data[1].y, testResponse1.data.y, 'second graph y vals');
 
-        assert.equal(graphDiv.data.length, 2, 'data length 2');
-        expectedNames.push('[3D6]');
-        tableName.find('td').each(function (index) {
-            assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct 2 names');
-        });
-        done2();
-    }, 500);
+    assert.equal(graphDiv.data.length, 2, 'data length 2');
+    expectedNames.push('[3D6]');
+    tableName.find('td').each(function (index) {
+        assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct 2 names');
+    });
 
 });
 
-QUnit.test('getTable assigns rollers', function (assert) {
+QUnit.test('processNewData clears rolls and assigns rollers', function (assert) {
     initTest();
 
     const table0 = $('#table-0');
     const table1 = $('#table-1');
+    const rollResults0 = table0.data('rollResults');
+    const rollResults1 = table1.data('rollResults');
+    rollResults0.push('a');
+    rollResults1.push('a');
 
-    table0[0].tableQuery.value = 0;
-    table1[0].tableQuery.value = 1;
+    processNewData(table0, testResponse0);
+    assert.deepEqual(table0.data('rollResults'), [], "table0 rollResults reset");
+    assert.deepEqual(table1.data('rollResults'), rollResults1, 'table1 rollResults not reset');
 
-    // todo: start testing here.
-    // todo: getTable also clears rolls, hideTable also clears rolls
+    table0.find('.roller')[0].click();
+    assert.ok(["1", "2", "3"].includes(table0.data('rollResults')[0]), 'table0 roller rolls 1D3');
 
-    getTable(document.getElementById('table-0'));
-    const done1 = assert.async();
-    setTimeout(function () {
-        const table0Roller = table0.find('.roller')[0].onclick;
-        const table1Roller = table1.find('.roller')[0].onclick;
-        assert.strictEqual(typeof table0Roller, "function", "callback assigned" );
-        assert.strictEqual(table1Roller, undefined, "table1 click undefined");
-        done1();
-    }, 500);
-
-
-    // getTable(document.getElementById('table-1'));
-    // const done2 = assert.async();
-    // setTimeout(function () {
-    //     assert.deepEqual(graphDiv.data[0].x, testResponse0.data.x, 'first graph x vals');
-    //     assert.deepEqual(graphDiv.data[0].y, testResponse0.data.y, 'first graph y vals');
-    //
-    //     assert.deepEqual(graphDiv.data[1].x, testResponse1.data.x, 'second graph x vals');
-    //     assert.deepEqual(graphDiv.data[1].y, testResponse1.data.y, 'second graph y vals');
-    //
-    //     assert.equal(graphDiv.data.length, 2, 'data length 2');
-    //     expectedNames.push('[3D6]');
-    //     tableName.find('td').each(function (index) {
-    //         assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct 2 names');
-    //     });
-    //     done2();
-    // }, 500);
+    table1.find('.roller')[0].click();
+    assert.deepEqual(table1.data('rollResults'), rollResults1, "table1 has no roller assigned")
 
 });
 
@@ -738,7 +732,41 @@ QUnit.test('hideTableForm test all actions', function (assert) {
     });
 
 });
+QUnit.test('hideTableForm clears rollResults and un-assigns roller', function (assert) {
+    initTest();
+    const table0 = $('#table-0');
+    const table1 = $('#table-1');
 
+    const tableObj0 = {
+        roller: {
+            height: '1',
+            aliases: [{primary: '1', alternate: '1', primaryHeight: '1'}]
+        }
+    };
+    const tableObj1 = testResponse0;
+
+    table0.data('tableObj', tableObj0);
+    table1.data('tableObj', tableObj1);
+    assignRollers();
+
+    table0.find('.roller').click();
+    table1.find('.roller').click();
+
+    assert.deepEqual(table0.data('rollResults'), ["1"], "table0 roll Results set up with one entry");
+
+    const table1RollResults = table1.data('rollResults').slice();
+    assert.deepEqual(table1RollResults.length, 1, "table1 rollResults set up with one entry");
+
+    hideTableForm('table-0');
+    assert.deepEqual(table0.data('rollResults'), [], "table0 rollResults reset");
+    table0.find('.roller').click();
+    assert.deepEqual(table0.data('rollResults'), [], "table0 roller un-assigned");
+
+    assert.deepEqual(table1.data('rollResults'), table1RollResults, "table1 rollResults not reset");
+    table1.find('.roller').click();
+    assert.deepEqual(table1.data('rollResults').length, 2, "table1 roller still assigned");
+
+});
 QUnit.test('removeStatsTraces no presence in data.', function (assert) {
     initTest();
     const graphDiv = document.getElementById('plotter');
