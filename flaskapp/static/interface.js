@@ -112,7 +112,7 @@ function hideTableForm(idStr) {
     plotCurrentTables();
     resetStatsTable();
     clearRollResults(theForm);
-    assignRollers();  
+    assignRollers();
 }
 
 function hideStatsForm(idStr) {
@@ -250,18 +250,33 @@ function assignRollers() {
 function assignRoller(tableRequestJQuery) {
     const tableObj = tableRequestJQuery.data("tableObj");
     const rollerButton = tableRequestJQuery.find('.roller');
+    const rollDisplay = tableRequestJQuery.find('.rollDisplay');
+    // const numberList = tableRequestJQuery.find('.numberList');
+
     rollerButton.off("click");
+    rollDisplay.text("None");
 
     if (tableObj !== null) {
         const rollerObject = new Roller(tableObj.roller.height, tableObj.roller.aliases);
         const rollResults = tableRequestJQuery.data("rollResults");
+        let innerText = "";
         rollerButton.click(function () {
-                rollResults.push(rollerObject.roll());
-                alert(rollResults);
+                const newRoll = rollerObject.roll();
+                rollResults.push(newRoll);
+                rollDisplay.text(newRoll);
+                const start = "<span class='tooltiptext numberList'>previous<br>";
+                const end = "</span>";
+                innerText  = newRoll + start;
+
+                let previousRolls = "";
+                for (let index=rollResults.length - 2; index >= 0; index--){
+                    previousRolls = previousRolls +  rollResults[index] + "<br>"
+                }
+                innerText = innerText + previousRolls + end;
+                rollDisplay[0].innerHTML = innerText;
             }
         );
     }
-    console.log("roller button after ", rollerButton.onclick);
 }
 
 function clearRollResults(tableRequestJQuery) {
