@@ -250,37 +250,46 @@ function assignRollers() {
 function assignRoller(tableRequestJQuery) {
     const tableObj = tableRequestJQuery.data("tableObj");
     const rollerButton = tableRequestJQuery.find('.roller');
-    const rollDisplay = tableRequestJQuery.find('.rollDisplay');
-    // const numberList = tableRequestJQuery.find('.numberList');
 
     rollerButton.off("click");
-    rollDisplay.text("None");
 
     if (tableObj !== null) {
         const rollerObject = new Roller(tableObj.roller.height, tableObj.roller.aliases);
         const rollResults = tableRequestJQuery.data("rollResults");
-        let innerText = "";
         rollerButton.click(function () {
                 const newRoll = rollerObject.roll();
                 rollResults.push(newRoll);
-                rollDisplay.text(newRoll);
-                const start = "<span class='tooltiptext numberList'>previous<br>";
-                const end = "</span>";
-                innerText  = newRoll + start;
-
-                let previousRolls = "";
-                for (let index=rollResults.length - 2; index >= 0; index--){
-                    previousRolls = previousRolls +  rollResults[index] + "<br>"
-                }
-                innerText = innerText + previousRolls + end;
-                rollDisplay[0].innerHTML = innerText;
+                displayRollResults(tableRequestJQuery);
             }
         );
     }
 }
 
+function displayRollResults(tableRequestJQuery) {
+    const rollResultsCopy = tableRequestJQuery.data('rollResults').slice();
+    let innerHTML = "None";
+    const firstNumber = rollResultsCopy.pop();
+    if (firstNumber !== undefined) {
+        innerHTML = firstNumber;
+    }
+    const addTollTipText = (rollResultsCopy.length > 0);
+    const toolTipStart = "<span class=\"tooltiptext numberList\">Previous<br>";
+    const toolTipEnd = "</span>";
+    if (addTollTipText) {
+        innerHTML += toolTipStart;
+    }
+    while (rollResultsCopy.length > 0) {
+        innerHTML += rollResultsCopy.pop() + "<br>";
+    }
+    if (addTollTipText) {
+        innerHTML += toolTipEnd;
+    }
+    tableRequestJQuery.find('.rollDisplay')[0].innerHTML = innerHTML;
+}
+
 function clearRollResults(tableRequestJQuery) {
     tableRequestJQuery.data('rollResults', []);
+    displayRollResults(tableRequestJQuery);
 }
 
 // plotStats and helpers

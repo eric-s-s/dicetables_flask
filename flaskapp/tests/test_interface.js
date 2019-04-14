@@ -454,6 +454,38 @@ QUnit.test('resetStatsTable', function (assert) {
     });
 });
 
+QUnit.test("assignRoller on table JQuery.  assigns function that alters displays rolls", function (assert) {
+    const table0 = $("#table-0");
+    clearRollResults(table0);
+    const roller = table0.find('.roller')[0];
+    const display = table0.find('.rollDisplay')[0];
+
+    const tableObj = {
+        roller: {
+            height: '1',
+            aliases: [{primary: '1', alternate: '1', primaryHeight: '1'}]
+        }
+    };
+
+    roller.click();
+    assert.deepEqual(display.innerHTML, "None", "rollDisplay starts empty");
+
+
+    table0.data('tableObj', tableObj);
+    assignRoller(table0);
+    roller.click();
+    assert.deepEqual(display.innerHTML, "1", "rollDisplay altered by new click.");
+
+    roller.click();
+    let expected = "1<span class=\"tooltiptext numberList\">Previous<br>1<br></span>";
+    assert.deepEqual(display.innerHTML, expected, "rollDisplay again altered by new click.");
+
+    table0.data('tableObj', null);
+    assignRoller(table0);
+    roller.click();
+    assert.deepEqual(display.innerHTML, expected, "click is unassigned when tableObj is null");
+});
+
 QUnit.test("assignRoller on table JQuery.  assigns function that alters rollResults", function (assert) {
     const table0 = $("#table-0");
     clearRollResults(table0);
@@ -469,7 +501,6 @@ QUnit.test("assignRoller on table JQuery.  assigns function that alters rollResu
     const rollResults = table0.data('rollResults');
     roller.click();
     assert.deepEqual(rollResults, [], "rollResults starts empty");
-
 
 
     table0.data('tableObj', tableObj);
@@ -496,7 +527,6 @@ QUnit.test("assignRoller only affects specific rollResults", function (assert) {
     const roller1 = table1.find(".roller")[0];
     clearRollResults(table1);
     const rollResults1 = table1.data('rollResults');
-
 
 
     const tableObj = {
@@ -573,11 +603,42 @@ QUnit.test("assignRollers", function (assert) {
     assert.deepEqual(rollResults1, ["1", "1"], "table1 correctly re-assigned");
 });
 
+QUnit.test("displayRollResults empty results", function (assert) {
+    const table0 = $('#table-0');
+    table0.data('rollResults', []);
+    displayRollResults(table0);
+    assert.deepEqual(table0.find('.rollDisplay')[0].innerHTML, "None");
+});
+
+QUnit.test("displayRollResults single result", function (assert) {
+    const table0 = $('#table-0');
+    table0.data('rollResults', [2]);
+    displayRollResults(table0);
+    assert.deepEqual(table0.find('.rollDisplay')[0].innerHTML, '2');
+});
+
+QUnit.test("displayRollResults multiple result", function (assert) {
+    const table0 = $('#table-0');
+    table0.data('rollResults', [2, 3, 4]);
+    displayRollResults(table0);
+    const expected = "4<span class=\"tooltiptext numberList\">Previous<br>3<br>2<br></span>";
+    assert.deepEqual(table0.find('.rollDisplay')[0].innerHTML, expected);
+});
+
+QUnit.test("displayRollResults does not mutate rollResults", function (assert) {
+    const table0 = $('#table-0');
+    table0.data('rollResults', [1, 2, 3]);
+    displayRollResults(table0);
+    assert.deepEqual(table0.data('rollResults'), [1, 2, 3]);
+});
+
 QUnit.test("clearRollResults", function (assert) {
     const table0 = $('#table-0');
     table0.data('rollResults', [1, 2, 3]);
+    table0.find('.rollDisplay')[0].innerHTML = 'for test';
     clearRollResults(table0);
-    assert.deepEqual(table0.data('rollResults'), [], "results are empty")
+    assert.deepEqual(table0.data('rollResults'), [], "results are empty");
+    assert.deepEqual(table0.find('.rollDisplay')[0].innerHTML, 'None');
 });
 
 QUnit.test('getTable retrieves data and calls processNewData on $(table) and data', function (assert) {
@@ -592,7 +653,7 @@ QUnit.test('getTable retrieves data and calls processNewData on $(table) and dat
     const originalFunction = processNewData;
 
     let callCounter = 0;
-    processNewData = function(tableRequestJQuery, data) {
+    processNewData = function (tableRequestJQuery, data) {
         tableRequestJQuery.data('calledWith', data);
         callCounter++;
     };
