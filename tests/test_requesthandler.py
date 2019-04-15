@@ -173,26 +173,51 @@ class TestRequestHandler(unittest.TestCase):
             ],
             'range': (1, 4),
             'mean': 2.5,
-            'stddev': 1.118
+            'stddev': 1.118,
+            'roller': {
+                'height': "4",
+                'aliases': [
+                    {'primary': "4", 'alternate': "4", 'primaryHeight': "4"},
+                    {'primary': "3", 'alternate': "3", 'primaryHeight': "4"},
+                    {'primary': "2", 'alternate': "2", 'primaryHeight': "4"},
+                    {'primary': "1", 'alternate': "1", 'primaryHeight': "4"}
+                ]
+            }
         }
 
         self.assertEqual(answer, expected)
 
     def test_make_dict_large_number_table(self):
-        table = DiceTable({1: 1, 2: 99 ** 1000}, DiceRecord.new())
+        table = DiceTable({1: 1, 2: 9 ** 351}, DiceRecord.new())
         answer = make_dict(table)
         expected = {
             'data': {'x': (1, 2), 'y': (0.0, 100.0)},
             'forSciNum': [
                 {'roll': 1, 'mantissa': '1.00000', 'exponent': '0'},
-                {'roll': 2, 'mantissa': '4.31712', 'exponent': '1995'}
+                {'roll': 2, 'mantissa': '8.69202', 'exponent': '334'}
             ],
             'mean': 2.0,
             'range': (1, 2),
             'name': '<DiceTable containing []>',
             'diceStr': '',
             'stddev': 0.0,
-            'tableString': '1: 1\n2: 4.317e+1995\n'
+            'tableString': '1: 1\n2: 8.692e+334\n',
+            'roller': {
+                'height': ('8692021926532582239431197828370635593634075173099158789854434049807997760319275071636088'
+                           '5895145922991572345585185250800940116508114750525076655926616148114182143549026229853337'
+                           '9940869208919850517403157109776051593152797345404989883632793071982398710942373198113120'
+                           '40403122389178667907944352945294284623021821750094845717881664249886010'),
+                'aliases': [
+                    {'primary': "1", "alternate": "2", "primaryHeight": "2"},
+                    {"primary": "2", "alternate": "2",
+                     "primaryHeight": ("8692021926532582239431197828370635593634075173099158789854434049807997760319"
+                                       "2750716360885895145922991572345585185250800940116508114750525076655926616148"
+                                       "1141821435490262298533379940869208919850517403157109776051593152797345404989"
+                                       "8836327930719823987109423731981131204040312238917866790794435294529428462302"
+                                       "1821750094845717881664249886010")}
+
+                ]
+            }
         }
 
         self.assertEqual(answer, expected)
@@ -237,7 +262,24 @@ class TestRequestHandler(unittest.TestCase):
             ],
             'range': (7, 18),
             'mean': 13.97,
-            'stddev': 1.642
+            'stddev': 1.642,
+            'roller': {
+                'aliases': [{
+                    'alternate': '16', 'primary': '18', 'primaryHeight': '11643588'},
+                    {'alternate': '15', 'primary': '16', 'primaryHeight': '48494376'},
+                    {'alternate': '15', 'primary': '17', 'primaryHeight': '46927188'},
+                    {'alternate': '15', 'primary': '11', 'primaryHeight': '50159964'},
+                    {'alternate': '15', 'primary': '10', 'primaryHeight': '13090764'},
+                    {'alternate': '14', 'primary': '15', 'primaryHeight': '24512328'},
+                    {'alternate': '14', 'primary': '9', 'primaryHeight': '367212'},
+                    {'alternate': '14', 'primary': '8', 'primaryHeight': '3612'},
+                    {'alternate': '13', 'primary': '14', 'primaryHeight': '8792388'},
+                    {'alternate': '13', 'primary': '7', 'primaryHeight': '12'},
+                    {'alternate': '12', 'primary': '13', 'primaryHeight': '39850836'},
+                    {'alternate': '12', 'primary': '12', 'primaryHeight': '81000000'}
+                ],
+                'height': '81000000',
+            },
         }
 
         self.assertEqual(answer, expected)
@@ -251,17 +293,53 @@ class TestRequestHandler(unittest.TestCase):
         self.assertEqual(table.calc.stddev(3), 0.471)
         self.assertEqual(answer['stddev'], 0.471)
 
+    def test_make_dict_can_handle_gaps(self):
+        table = DiceTable.new().add_die(WeightedDie({1: 1, 3: 1}))
+        answer = make_dict(table)
+        expected = {
+            'name': '<DiceTable containing [1D3  W:2]>',
+            'diceStr': 'WeightedDie({1: 1, 2: 0, 3: 1}): 1',
+            'data': {'x': (1, 2, 3), 'y': (50.0, 0.0, 50.0)},
+            'tableString': '1: 1\n2: 0\n3: 1\n',
+            'forSciNum': [
+                {'roll': 1, 'mantissa': '1.00000', 'exponent': '0'},
+                {'roll': 2, 'mantissa': '0', 'exponent': '0'},
+                {'roll': 3, 'mantissa': '1.00000', 'exponent': '0'}
+            ],
+            'range': (1, 3),
+            'mean': 2,
+            'stddev': 1.0,
+            'roller': {
+                'height': "2",
+                'aliases': [
+                    {'primary': "3", 'alternate': "3", 'primaryHeight': "2"},
+                    {'primary': "1", 'alternate': "1", 'primaryHeight': "2"}
+                ]
+            }
+        }
+        self.assertEqual(answer, expected)
+
     def test_get_response_empty_string_and_whitespace(self):
         empty_str_answer = self.handler.get_response('')
 
-        empty_response = {'data': {'x': (0,), 'y': (100.0,)},
-                          'forSciNum': [{'roll': 0, 'mantissa': '1.00000', 'exponent': '0'}],
-                          'mean': 0.0,
-                          'range': (0, 0),
-                          'name': '<DiceTable containing []>',
-                          'diceStr': '',
-                          'stddev': 0.0,
-                          'tableString': '0: 1\n'}
+        empty_response = {
+            'data': {'x': (0,), 'y': (100.0,)},
+            'forSciNum': [{'roll': 0, 'mantissa': '1.00000', 'exponent': '0'}],
+            'mean': 0.0,
+            'range': (0, 0),
+            'name': '<DiceTable containing []>',
+            'diceStr': '',
+            'stddev': 0.0,
+            'tableString': '0: 1\n',
+            'roller': {
+                'aliases': [
+                    {'alternate': '0',
+                     'primary': '0',
+                     'primaryHeight': '1'}
+                ],
+                'height': '1',
+            }
+        }
         self.assertEqual(empty_str_answer, empty_response)
 
         whitespace_str_answer = self.handler.get_response('   ')
@@ -269,15 +347,23 @@ class TestRequestHandler(unittest.TestCase):
 
     def test_get_response(self):
         response = self.handler.get_response('Die(2)')
-        expected = {'diceStr': 'Die(2): 1',
-                    'name': '<DiceTable containing [1D2]>',
-                    'data': {'x': (1, 2), 'y': (50.0, 50.0)},
-                    'tableString': '1: 1\n2: 1\n',
-                    'forSciNum': [
-                        {'roll': 1, 'mantissa': '1.00000', 'exponent': '0'},
-                        {'roll': 2, 'mantissa': '1.00000', 'exponent': '0'}
-                    ],
-                    'range': (1, 2), 'mean': 1.5, 'stddev': 0.5}
+        expected = {
+            'diceStr': 'Die(2): 1',
+            'name': '<DiceTable containing [1D2]>',
+            'data': {'x': (1, 2), 'y': (50.0, 50.0)},
+            'tableString': '1: 1\n2: 1\n',
+            'forSciNum': [
+                {'roll': 1, 'mantissa': '1.00000', 'exponent': '0'},
+                {'roll': 2, 'mantissa': '1.00000', 'exponent': '0'}
+            ],
+            'range': (1, 2), 'mean': 1.5, 'stddev': 0.5,
+            'roller': {
+                'aliases': [
+                    {'alternate': '2', 'primary': '2', 'primaryHeight': '2'},
+                    {'alternate': '1', 'primary': '1', 'primaryHeight': '2'}],
+                'height': '2',
+            },
+        }
         self.assertEqual(response, expected)
 
     def test_get_response_error_response_all_errors(self):

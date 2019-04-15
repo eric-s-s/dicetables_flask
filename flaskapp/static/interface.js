@@ -11,6 +11,9 @@ function onPageLoad() {
         getTable(this);
     });
     allTableForms.data('tableObj', null);
+    allTableForms.each(function () {
+        clearRollResults($(this));
+    });
 
     allStatsForms.submit(function (event) {
         event.preventDefault();
@@ -71,23 +74,31 @@ function setUpExample(exampleStr) {
     return toAlter;
 }
 
+function processNewData(tableRequestJQuery, data) {
+    console.log(data);
+    tableRequestJQuery.data('tableObj', data);
+    plotCurrentTables();
+    resetStatsTable();
+    clearRollResults(tableRequestJQuery);
+    assignRollers();
+}
+
 function getTable(tableForm) {
     const requestStr = tableForm.tableQuery.value;
     $.getJSON($SCRIPT_ROOT + '_get_table', {'requestStr': requestStr},
         function (data) {
-            console.log(data);
-            $(tableForm).data('tableObj', data);
-            plotCurrentTables();
-            resetStatsTable();
-        }).fail(function (jqXHR) {
-        console.log(jqXHR);
-        /** @namespace jqXHR.responseJSON */
-        const errorJson = jqXHR.responseJSON;
-        alert(
-            jqXHR.status + ': ' + jqXHR.statusText + '\n' +
-            'error type: ' + errorJson.type + '\ndetails: ' + errorJson.error
-        );
-    });
+            processNewData($(tableForm), data);
+        }
+    ).fail(function (jqXHR) {
+            console.log(jqXHR);
+            /** @namespace jqXHR.responseJSON */
+            const errorJson = jqXHR.responseJSON;
+            alert(
+                jqXHR.status + ': ' + jqXHR.statusText + '\n' +
+                'error type: ' + errorJson.type + '\ndetails: ' + errorJson.error
+            );
+        }
+    );
 }
 
 function hideTableForm(idStr) {
@@ -100,6 +111,8 @@ function hideTableForm(idStr) {
     hiddenForms.sort();
     plotCurrentTables();
     resetStatsTable();
+    clearRollResults(theForm);
+    assignRollers();
 }
 
 function hideStatsForm(idStr) {
@@ -182,7 +195,7 @@ function resetStatsTable() {
     const tableStdDev = $('#tableStdDev');
 
     $('.tableRequest').each(function () {
-        const tableObj = $('#' + this.id).data('tableObj');
+        const tableObj = $(this).data('tableObj');
         if (tableObj !== null) {
             const forStatsTable = getTableObjStats(tableObj, colorIndex);
             colorIndex++;
@@ -224,6 +237,59 @@ function getTableObjStats(tableObj, index) {
     out['tableMean'] = "<td style='color:" + color + "'>" + tableObj.mean + '</td>';
     out['tableStdDev'] = "<td style='color:" + color + "'>" + tableObj.stddev + '</td>';
     return out;
+}
+
+// assignRollers
+function assignRollers() {
+    $('.tableRequest').each(function () {
+            assignRoller($(this));
+        }
+    )
+}
+
+function assignRoller(tableRequestJQuery) {
+    const tableObj = tableRequestJQuery.data("tableObj");
+    const rollerButton = tableRequestJQuery.find('.roller');
+
+    rollerButton.off("click");
+
+    if (tableObj !== null) {
+        const rollerObject = new Roller(tableObj.roller.height, tableObj.roller.aliases);
+        const rollResults = tableRequestJQuery.data("rollResults");
+        rollerButton.click(function () {
+                const newRoll = rollerObject.roll();
+                rollResults.push(newRoll);
+                displayRollResults(tableRequestJQuery);
+            }
+        );
+    }
+}
+
+function displayRollResults(tableRequestJQuery) {
+    const rollResultsCopy = tableRequestJQuery.data('rollResults').slice();
+    let innerHTML = "None";
+    const firstNumber = rollResultsCopy.pop();
+    if (firstNumber !== undefined) {
+        innerHTML = firstNumber;
+    }
+    const addTollTipText = (rollResultsCopy.length > 0);
+    const toolTipStart = "<span class=\"tooltiptext numberList\">Previous<br>";
+    const toolTipEnd = "</span>";
+    if (addTollTipText) {
+        innerHTML += toolTipStart;
+    }
+    while (rollResultsCopy.length > 0) {
+        innerHTML += rollResultsCopy.pop() + "<br>";
+    }
+    if (addTollTipText) {
+        innerHTML += toolTipEnd;
+    }
+    tableRequestJQuery.find('.rollDisplay')[0].innerHTML = innerHTML;
+}
+
+function clearRollResults(tableRequestJQuery) {
+    tableRequestJQuery.data('rollResults', []);
+    displayRollResults(tableRequestJQuery);
 }
 
 // plotStats and helpers

@@ -65,6 +65,18 @@ tr:nth-child(even) {
     visibility: visible;
 }
 
+.rollDisplay {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    display: inline-block;
+    background-color: burlywood;
+    height: content-box;
+}
+.numberList {
+    overflow-y: scroll;
+    max-height: 200px;
+}
 /* Style The Dropdown Button */
 .dropbtn {
     background-color: #4CAF50;
