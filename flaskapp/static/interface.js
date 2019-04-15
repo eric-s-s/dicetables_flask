@@ -195,7 +195,7 @@ function resetStatsTable() {
     const tableStdDev = $('#tableStdDev');
 
     $('.tableRequest').each(function () {
-        const tableObj = $('#' + this.id).data('tableObj');
+        const tableObj = $(this).data('tableObj');
         if (tableObj !== null) {
             const forStatsTable = getTableObjStats(tableObj, colorIndex);
             colorIndex++;

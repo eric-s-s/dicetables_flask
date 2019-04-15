@@ -699,12 +699,13 @@ QUnit.test('processNewData plots current tables and resets StatsTable', function
     assert.equal(tableName.find('td').length, 0, 'statsTable names is empty');
 
     processNewData(table0, testResponse0);
-    const expectedNames = ['[1D3]', '[1D5]'];
+    const expectedNames = ['[1D3]'];
 
     assert.deepEqual(graphDiv.data[0].x, testResponse0.data.x, 'one graph x vals');
     assert.deepEqual(graphDiv.data[0].y, testResponse0.data.y, 'one graph y vals');
     assert.equal(graphDiv.data.length, 1, 'one graph data only one length');
 
+    expectedNames.push('[1D5]');
     tableName.find('td').each(function (index) {
         assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct');
     });
@@ -718,7 +719,6 @@ QUnit.test('processNewData plots current tables and resets StatsTable', function
     assert.deepEqual(graphDiv.data[1].y, testResponse1.data.y, 'second graph y vals');
 
     assert.equal(graphDiv.data.length, 2, 'data length 2');
-    expectedNames.push('[3D6]');
     tableName.find('td').each(function (index) {
         assert.equal(this.innerHTML.indexOf(expectedNames[index]), 0, 'statsTable names are correct 2 names');
     });
